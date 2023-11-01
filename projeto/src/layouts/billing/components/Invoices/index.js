@@ -1,12 +1,14 @@
 import Card from "@mui/material/Card";
 
 import React, { useState, useEffect } from "react";
+
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDButton from "components/MDButton";
 
 import Invoice from "layouts/billing/components/Invoice";
 import axios from "axios";
+import token from "../../../authentication/access/auth";
 
 function Invoices() {
   const [assinaturas, setAssinaturas] = useState([]);
@@ -14,8 +16,7 @@ function Invoices() {
   useEffect(() => {
     const config = {
       headers: {
-        authorization:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6InRlc3QiLCJkYm5hbWUiOiIxNDEwNTgiLCJpYXQiOjE2OTc4MzIzNjksImV4cCI6MTY5NzgzNTk2OX0.57s-mAqP6l8aX7F_cCG5GyE7zclGInx2hph6bxFbF4A",
+        authorization: token,
       },
     };
 

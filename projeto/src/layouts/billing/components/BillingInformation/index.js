@@ -24,6 +24,7 @@ import MDTypography from "components/MDTypography";
 import Bill from "layouts/billing/components/Bill";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
+import token from "../../../authentication/access/auth";
 
 function BillingInformation() {
   const [invoices, setInvoices] = useState([]);
@@ -31,8 +32,7 @@ function BillingInformation() {
   useEffect(() => {
     const config = {
       headers: {
-        authorization:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6InRlc3QiLCJkYm5hbWUiOiIxNDEwNTgiLCJpYXQiOjE2OTc4MzIzNjksImV4cCI6MTY5NzgzNTk2OX0.57s-mAqP6l8aX7F_cCG5GyE7zclGInx2hph6bxFbF4A",
+        authorization: token,
       },
     };
 
