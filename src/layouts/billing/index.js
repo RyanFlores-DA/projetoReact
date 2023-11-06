@@ -18,6 +18,7 @@ import Grid from "@mui/material/Grid";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
+import DefaultProjectCard from "examples/Cards/ProjectCards/DefaultProjectCard";
 
 // Material Dashboard 2 React examples
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
@@ -35,8 +36,21 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import token from "../authentication/access/auth";
 
+import Header from "layouts/profile/components/Header";
+
+// Images
+import homeDecor1 from "assets/images/home-decor-1.jpg";
+import homeDecor2 from "assets/images/home-decor-2.jpg";
+import homeDecor3 from "assets/images/home-decor-3.jpg";
+import homeDecor4 from "assets/images/home-decor-4.jpeg";
+import team1 from "assets/images/team-1.jpg";
+import team2 from "assets/images/team-2.jpg";
+import team3 from "assets/images/team-3.jpg";
+import team4 from "assets/images/team-4.jpg";
+
 function Billing() {
   const [cards, setCards] = useState([]);
+  const [metas, setMetas] = useState([]);
 
   useEffect(() => {
     const config = {
@@ -49,10 +63,35 @@ function Billing() {
       .get("http://localhost:3003/card", config)
       .then((response) => setCards(response.data))
       .catch((error) => console.error("Erro ao buscar dados das faturas:", error));
+    axios
+      .get("http://localhost:3003/metas", config)
+      .then((response) => setMetas(response.data))
+      .catch((error) => console.error("Erro ao buscar dados das metas:", error));
   }, []);
   return (
     <DashboardLayout>
-      <DashboardNavbar absolute isMini />
+      <Header>
+        <MDBox p={2}>
+          <Grid container spacing={6}>
+            {metas.map((metas) => (
+              <Grid key={metas.meta} item xs={12} md={6} xl={3}>
+                <DefaultProjectCard
+                  image={homeDecor1}
+                  label={metas.tipo}
+                  title={metas.titulo}
+                  description={metas.descricao}
+                  action={{
+                    type: "internal",
+                    route: "/pages/profile/profile-overview",
+                    color: "info",
+                    label: "Ver Meta",
+                  }}
+                />
+              </Grid>
+            ))}
+          </Grid>
+        </MDBox>
+      </Header>
       <MDBox mt={8}>
         <MDBox mb={3}>
           <Grid container spacing={3}>
@@ -76,14 +115,6 @@ function Billing() {
                     value="+$2000"
                   />
                 </Grid>
-                <Grid item xs={12} md={6} xl={3}>
-                  <DefaultInfoCard
-                    icon="paypal"
-                    title="paypal"
-                    description="Freelance Payment"
-                    value="$455.00"
-                  />
-                </Grid>
                 <Grid item xs={12}>
                   <PaymentMethod />
                 </Grid>
@@ -96,7 +127,7 @@ function Billing() {
         </MDBox>
         <MDBox mb={3}>
           <Grid container spacing={3}>
-            <Grid item xs={12} md={7}>
+            <Grid item xs={10} md={7}>
               <BillingInformation />
             </Grid>
             <Grid item xs={12} md={5}>
