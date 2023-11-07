@@ -1,4 +1,4 @@
 const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6InRlc3QiLCJkYm5hbWUiOiIxNDEwNTgiLCJpYXQiOjE2OTkyOTg1OTYsImV4cCI6MTY5OTMwMjE5Nn0.df8jJP_torhDfDZXsOKCfZUsxgg7hWBB26OHpxEBwqU";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6InRlc3QiLCJkYm5hbWUiOiIxNDEwNTgiLCJpYXQiOjE2OTkzMjM4ODMsImV4cCI6MTY5OTMyNzQ4M30.SJmeGxw1nUBaB1pjYzd57jvAxTHizzFvDjeul3hoOsk";
 
 export default token;
