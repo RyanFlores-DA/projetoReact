@@ -37,6 +37,8 @@ import MDButton from "components/MDButton";
 
 // Authentication layout components
 import BasicLayout from "layouts/authentication/components/BasicLayout";
+import React, { useState } from 'react';
+import axios from 'axios';
 
 // Images
 import bgImage from "assets/images/bg-sign-in-basic.jpeg";
@@ -45,6 +47,27 @@ function Basic() {
   const [rememberMe, setRememberMe] = useState(false);
 
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
+
+  const [login, setLogin] = useState('');
+  const [pass, setPassword] = useState('');
+
+  const handleSignIn = async () => {
+    try {
+      const response = await axios.post('/api/login', { email, password });
+
+      const { login, token } = response.data;
+
+      // Armazene o nome de usuário e o token na sessão ou no estado da aplicação, conforme necessário.
+      // Exemplo de armazenamento na sessão:
+      sessionStorage.setItem('login', login);
+      sessionStorage.setItem('token', token);
+
+      // Redirecione o usuário para outra página após o login, se necessário.
+      // Exemplo: history.push('/dashboard');
+    } catch (error) {
+      console.error('Erro ao fazer login:', error);
+    }
+  };
 
   return (
     <BasicLayout image={bgImage}>
