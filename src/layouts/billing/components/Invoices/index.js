@@ -16,7 +16,7 @@ function Invoices() {
   useEffect(() => {
     const config = {
       headers: {
-        authorization: token,
+        authorization: sessionStorage.getItem("token"),
       },
     };
 

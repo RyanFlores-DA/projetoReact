@@ -57,10 +57,10 @@ function Billing() {
   useEffect(() => {
     const config = {
       headers: {
-        authorization: token,
+        authorization: sessionStorage.getItem("token"),
       },
     };
-
+    console.log(sessionStorage.getItem("token"));
     axios
       .get("http://localhost:3003/card", config)
       .then((response) => setCards(response.data))

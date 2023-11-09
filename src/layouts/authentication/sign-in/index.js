@@ -37,8 +37,7 @@ import MDButton from "components/MDButton";
 
 // Authentication layout components
 import BasicLayout from "layouts/authentication/components/BasicLayout";
-import React, { useState } from 'react';
-import axios from 'axios';
+import axios from "axios";
 
 // Images
 import bgImage from "assets/images/bg-sign-in-basic.jpeg";
@@ -48,24 +47,29 @@ function Basic() {
 
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
 
-  const [login, setLogin] = useState('');
-  const [pass, setPassword] = useState('');
+  const [login, setLogin] = useState("");
+  const [pass, setPassword] = useState("");
 
   const handleSignIn = async () => {
     try {
-      const response = await axios.post('/api/login', { email, password });
+      const response = await axios.post("http://localhost:3003/login", null, {
+        params: {
+          login,
+          pass,
+        },
+      });
 
-      const { login, token } = response.data;
+      const { user, token } = response.data;
 
       // Armazene o nome de usuário e o token na sessão ou no estado da aplicação, conforme necessário.
       // Exemplo de armazenamento na sessão:
-      sessionStorage.setItem('login', login);
-      sessionStorage.setItem('token', token);
+      sessionStorage.setItem("user", response.data.login);
+      sessionStorage.setItem("token", token);
 
       // Redirecione o usuário para outra página após o login, se necessário.
-      // Exemplo: history.push('/dashboard');
+      window.location.href = "/billing";
     } catch (error) {
-      console.error('Erro ao fazer login:', error);
+      console.error("Erro ao fazer login:", error);
     }
   };
 
@@ -107,10 +111,20 @@ function Basic() {
         <MDBox pt={4} pb={3} px={3}>
           <MDBox component="form" role="form">
             <MDBox mb={2}>
-              <MDInput type="email" label="Email" fullWidth />
+              <MDInput
+                type="email"
+                label="Email"
+                fullWidth
+                onChange={(e) => setLogin(e.target.value)}
+              />
             </MDBox>
             <MDBox mb={2}>
-              <MDInput type="password" label="Password" fullWidth />
+              <MDInput
+                type="password"
+                label="Password"
+                fullWidth
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </MDBox>
             <MDBox display="flex" alignItems="center" ml={-1}>
               <Switch checked={rememberMe} onChange={handleSetRememberMe} />
@@ -125,7 +139,7 @@ function Basic() {
               </MDTypography>
             </MDBox>
             <MDBox mt={4} mb={1}>
-              <MDButton variant="gradient" color="info" fullWidth>
+              <MDButton variant="gradient" color="info" fullWidth onClick={handleSignIn}>
                 sign in
               </MDButton>
             </MDBox>

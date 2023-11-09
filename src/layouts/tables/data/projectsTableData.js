@@ -43,7 +43,7 @@ export default function data() {
   useEffect(() => {
     const config = {
       headers: {
-        authorization: token,
+        authorization: sessionStorage.getItem("token"),
       },
     };
 
