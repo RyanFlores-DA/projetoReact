@@ -43,6 +43,7 @@ import axios from "axios";
 import bgImage from "assets/images/bg-sign-in-basic.jpeg";
 
 function Basic() {
+  sessionStorage.setItem("redirect", false);
   const [rememberMe, setRememberMe] = useState(false);
 
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
@@ -65,7 +66,6 @@ function Basic() {
       // Exemplo de armazenamento na sessão:
       sessionStorage.setItem("user", response.data.login);
       sessionStorage.setItem("token", token);
-
       // Redirecione o usuário para outra página após o login, se necessário.
       window.location.href = "/billing";
     } catch (error) {

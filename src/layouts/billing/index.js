@@ -60,7 +60,26 @@ function Billing() {
         authorization: sessionStorage.getItem("token"),
       },
     };
-    console.log(sessionStorage.getItem("token"));
+    console.log(!sessionStorage.getItem("redirect"));
+    console.log(sessionStorage.getItem("redirect"));
+    if (sessionStorage.getItem("redirect") === null) {
+      console.log("nuloooo");
+    }
+
+    if (!sessionStorage.getItem("token")) {
+      console.log("Token not found");
+      sessionStorage.setItem("redirect", true);
+      if (
+        sessionStorage.getItem("redirect") == "true" ||
+        sessionStorage.getItem("redirect") === null
+      ) {
+        console.log("Redirecionando");
+        sessionStorage.setItem("redirect", false);
+        window.location.href = "/authentication/sign-in";
+      }
+    } else {
+      console.log("Não precisa redirecionar");
+    }
     axios
       .get("http://localhost:3003/card", config)
       .then((response) => setCards(response.data))
