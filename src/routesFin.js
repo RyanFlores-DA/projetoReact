@@ -48,12 +48,12 @@ import Login from "layouts/login";
 // @mui icons
 import Icon from "@mui/material/Icon";
 
-const routes = [
+const routesFin = [
   {
-    type: "collapse",
-    name: "Dashboard",
+    type: "hidden",
+    name: "",
     key: "dashboard",
-    icon: <Icon fontSize="small">dashboard</Icon>,
+    icon: "",
     route: "/dashboard",
     component: <Dashboard />,
   },
@@ -106,7 +106,7 @@ const routes = [
   //   component: <Profile />,
   // },
   {
-    type: "collapse",
+    type: "hidden",
     name: "Login",
     key: "sign-in",
     icon: <Icon fontSize="small">login</Icon>,
@@ -123,4 +123,4 @@ const routes = [
   // },
 ];
 
-export default routes;
+export default routesFin;

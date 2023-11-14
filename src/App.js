@@ -48,6 +48,7 @@ import createCache from "@emotion/cache";
 
 // Material Dashboard 2 React routes
 import routes from "routes";
+import routesFin from "routesFin";
 
 // Material Dashboard 2 React contexts
 import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "context";
@@ -158,8 +159,8 @@ export default function App() {
             <Sidenav
               color={sidenavColor}
               brand={(transparentSidenav && !darkMode) || whiteSidenav ? logoBlack : logoBlank}
-              brandName="Material Dashboard 2"
-              routes={routes}
+              brandName="Fin LIfe"
+              routes={routesFin}
               onMouseEnter={handleOnMouseEnter}
               onMouseLeave={handleOnMouseLeave}
             />
@@ -169,8 +170,12 @@ export default function App() {
         )}
         {layout === "vr" && <Configurator />}
         <Routes>
-          {getRoutes(routes)}
-          <Route path="*" element={<Navigate to="/dashboard" />} />
+          {getRoutes(routesFin)}
+          <Route path="*" element={<Navigate to="/billing" />} />
+          <Route
+            path="*/authentication/sign-in"
+            element={<Navigate to="*/authentication/sign-in" />}
+          />
         </Routes>
       </ThemeProvider>
     </CacheProvider>
@@ -183,7 +188,7 @@ export default function App() {
             color={sidenavColor}
             brand={(transparentSidenav && !darkMode) || whiteSidenav ? logoBlack : logoBlank}
             brandName="Sof Town"
-            routes={routes}
+            routes={routesFin}
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}
           />
@@ -193,8 +198,12 @@ export default function App() {
       )}
       {layout === "vr" && <Configurator />}
       <Routes>
-        {getRoutes(routes)}
-        <Route path="*" element={<Navigate to="/dashboard" />} />
+        {getRoutes(routesFin)}
+        <Route path="*" element={<Navigate to="/billing" />} />
+        <Route
+          path="*/authentication/sign-in"
+          element={<Navigate to="*/authentication/sign-in" />}
+        />
       </Routes>
     </ThemeProvider>
   );
