@@ -187,7 +187,7 @@ export default function App() {
           <Sidenav
             color={sidenavColor}
             brand={(transparentSidenav && !darkMode) || whiteSidenav ? logoBlack : logoBlank}
-            brandName="Sof Town"
+            brandName={`Sof Town - ${sessionStorage.getItem("user")}`}
             routes={routesFin}
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}

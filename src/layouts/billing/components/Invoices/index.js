@@ -21,7 +21,7 @@ function Invoices() {
     };
 
     axios
-      .get("http://localhost:3003/assinaturas", config)
+      .get("http://localhost:3003/api/assinaturas", config)
       .then((response) => setAssinaturas(response.data))
       .catch((error) => console.error("Erro ao buscar dados das faturas:", error));
   }, []);

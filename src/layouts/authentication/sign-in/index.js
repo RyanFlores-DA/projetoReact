@@ -40,8 +40,9 @@ import BasicLayout from "layouts/authentication/components/BasicLayout";
 import axios from "axios";
 
 // Images
-import bgImage from "assets/images/bg-sign-in-basic.jpeg";
-import bgImageBlack from "assets/images/back_login.jpeg";
+// import bgImage from "assets/images/bg-sign-in-basic.jpeg";
+import bgImageBlack from "assets/images/Fin.mp4";
+// import bgImageBlack from "assets/images/back_login.jpeg";
 
 function Basic() {
   sessionStorage.setItem("redirect", false);
@@ -50,23 +51,23 @@ function Basic() {
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
 
   const [login, setLogin] = useState("");
-  const [pass, setPassword] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSignIn = async () => {
     try {
-      const response = await axios.post("http://localhost:3003/login", null, {
+      const response = await axios.post("http://localhost:3003/api/login", null, {
         params: {
           login,
-          pass,
+          password,
         },
       });
 
-      const { user, token } = response.data;
+      const { usuario, token } = response.data;
 
       // Armazene o nome de usuário e o token na sessão ou no estado da aplicação, conforme necessário.
       // Exemplo de armazenamento na sessão:
-      sessionStorage.setItem("user", response.data.login);
-      sessionStorage.setItem("token", token);
+      sessionStorage.setItem("user", response.data.user);
+      sessionStorage.setItem("token", response.data.token);
       // Redirecione o usuário para outra página após o login, se necessário.
       window.location.href = "/billing";
     } catch (error) {

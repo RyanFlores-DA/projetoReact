@@ -24,6 +24,7 @@ import Icon from "@mui/material/Icon";
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
+import budge from "assets/images/budget.png";
 
 function DefaultInfoCard({ color, icon, title, description, value }) {
   return (
@@ -41,7 +42,8 @@ function DefaultInfoCard({ color, icon, title, description, value }) {
           borderRadius="lg"
           variant="gradient"
         >
-          <Icon fontSize="default">{icon}</Icon>
+          <MDBox component="img" src={budge} alt="Brand" width="2rem" />
+          {/* <Icon fontSize="default">{budge}</Icon> */}
         </MDBox>
       </MDBox>
       <MDBox pb={2} px={2} textAlign="center" lineHeight={1.25}>

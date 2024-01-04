@@ -48,7 +48,7 @@ export default function data() {
     };
 
     axios
-      .get("http://localhost:3003/metas", config)
+      .get("http://localhost:3003/api/metas", config)
       .then((response) => setMetas(response.data))
       .catch((error) => console.error("Erro ao buscar dados das metas:", error));
   }, []);

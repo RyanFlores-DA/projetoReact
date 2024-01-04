@@ -47,12 +47,14 @@ import team1 from "assets/images/team-1.jpg";
 import team2 from "assets/images/team-2.jpg";
 import team3 from "assets/images/team-3.jpg";
 import team4 from "assets/images/team-4.jpg";
+import budge from "assets/images/budget.png";
 
 import "../../personalizar/cursor.css";
 
 function Billing() {
   const [cards, setCards] = useState([]);
-  const [metas, setMetas] = useState([]);
+  const [despesas, setDespesas] = useState([]);
+  // const [metas, setMetas] = useState([]);
 
   useEffect(() => {
     const config = {
@@ -81,17 +83,21 @@ function Billing() {
       console.log("Não precisa redirecionar");
     }
     axios
-      .get("http://localhost:3003/card", config)
+      .get("http://localhost:3003/api/cards?primario=S", config)
       .then((response) => setCards(response.data))
-      .catch((error) => console.error("Erro ao buscar dados das faturas:", error));
+      .catch((error) => console.error("Erro ao buscar cartoes:", error));
     axios
-      .get("http://localhost:3003/metas", config)
-      .then((response) => setMetas(response.data))
-      .catch((error) => console.error("Erro ao buscar dados das metas:", error));
+      .get("http://localhost:3003/api/despesas", config)
+      .then((response) => setDespesas(response.data))
+      .catch((error) => console.error("Erro ao buscar dados das despesas:", error));
+    // axios
+    //   .get("http://localhost:3003/api/metas", config)
+    //   .then((response) => setMetas(response.data))
+    //   .catch((error) => console.error("Erro ao buscar dados das metas:", error));
   }, []);
   return (
     <DashboardLayout>
-      <Header>
+      {/* <Header>
         <MDBox p={2}>
           <Grid container spacing={6}>
             {metas.map((metas) => (
@@ -112,7 +118,7 @@ function Billing() {
             ))}
           </Grid>
         </MDBox>
-      </Header>
+      </Header> */}
       <MDBox mt={8}>
         <MDBox mb={3}>
           <Grid container spacing={3}>
@@ -124,17 +130,21 @@ function Billing() {
                       key={card.numero}
                       number={card.numero}
                       holder={card.nome}
-                      expires={card.data_exp}
+                      expires={card.data}
                     />
                   ))}
                 </Grid>
                 <Grid item xs={12} md={6} xl={3}>
-                  <DefaultInfoCard
-                    icon="account_balance"
-                    title="salary"
-                    description="Belong Interactive"
-                    value="+$2000"
-                  />
+                  {despesas.map((despesas) => (
+                    <DefaultInfoCard
+                      key={despesas.valor_despesas}
+                      color="dark"
+                      icon="account_balance"
+                      title="Despesas Fixas"
+                      description="Despesas rotineiras fixas"
+                      value={`R$ ${despesas.valor_despesas}`}
+                    />
+                  ))}
                 </Grid>
                 <Grid item xs={12}>
                   <PaymentMethod />

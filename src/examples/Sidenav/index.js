@@ -186,7 +186,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
           target="_blank"
           rel="noreferrer"
           variant="gradient"
-          color={sidenavColor}
+          color={"dark"}
           fullWidth
         >
           Sair
@@ -198,7 +198,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
 
 // Setting default values for the props of Sidenav
 Sidenav.defaultProps = {
-  color: "info",
+  color: "dark",
   brand: "",
 };
 

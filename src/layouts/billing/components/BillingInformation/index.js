@@ -28,6 +28,7 @@ import token from "../../../authentication/access/auth";
 
 function BillingInformation() {
   const [invoices, setInvoices] = useState([]);
+  const [loading, setLoading] = useState(true); // Adiciona um estado de carregamento
 
   useEffect(() => {
     const config = {
@@ -37,8 +38,11 @@ function BillingInformation() {
     };
 
     axios
-      .get("http://localhost:3003/myinvoices", config)
-      .then((response) => setInvoices(response.data))
+      .get("http://localhost:3003/api/vendas", config)
+      .then((response) => {
+        setInvoices(response.data);
+        setLoading(false); // Marca que os dados foram carregados com sucesso
+      })
       .catch((error) => console.error("Erro ao buscar dados das faturas:", error));
   }, []);
 
@@ -63,8 +67,15 @@ function BillingInformation() {
       return "Mês Inválido";
     }
   }
+
+  if (loading) {
+    return <p>Carregando...</p>;
+  }
+
   const date = new Date();
   const currentMonth = getMonthName(date.getMonth());
+  console.log(date.getMonth());
+
   return (
     <Card id="delete-account">
       <MDBox pt={3} px={2}>
@@ -76,11 +87,11 @@ function BillingInformation() {
         <MDBox component="ul" display="flex" flexDirection="column" p={0} m={0}>
           {invoices.map((invoice) => (
             <Bill
-              key={invoice.inv_description}
-              name={invoice.inv_description}
-              company={invoice.bank_descript}
-              email={invoice.inv_sale}
-              vat={invoice.inv_price}
+              key={invoice.descricao}
+              name={invoice.descricao}
+              company={invoice.banco}
+              email={invoice.data}
+              vat={invoice.valor}
             />
           ))}
         </MDBox>
