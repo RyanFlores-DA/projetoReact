@@ -77,7 +77,11 @@ const routesFin = [
     type: "collapse",
     name: "Finanças",
     key: "billing",
-    icon: <Icon fontSize="small">receipt_long</Icon>,
+    icon: (
+      <Icon fontSize="small" color="darkMode">
+        receipt_long
+      </Icon>
+    ),
     route: "/billing",
     component: <Billing />,
   },

@@ -25,8 +25,23 @@ import Icon from "@mui/material/Icon";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import budge from "assets/images/budget.png";
+import money_ammount from "assets/images/money-bag.png";
 
 function DefaultInfoCard({ color, icon, title, description, value }) {
+  let image = budge;
+  console.log(icon);
+  switch (icon) {
+    case "account_balance":
+      image = budge;
+      break;
+    case "money_ammount":
+      image = money_ammount;
+      break;
+    default:
+      image = budge;
+      break;
+  }
+
   return (
     <Card>
       <MDBox p={2} mx={3} display="flex" justifyContent="center">
@@ -42,7 +57,7 @@ function DefaultInfoCard({ color, icon, title, description, value }) {
           borderRadius="lg"
           variant="gradient"
         >
-          <MDBox component="img" src={budge} alt="Brand" width="2rem" />
+          <MDBox component="img" src={image} alt="Brand" width="2rem" />
           {/* <Icon fontSize="default">{budge}</Icon> */}
         </MDBox>
       </MDBox>

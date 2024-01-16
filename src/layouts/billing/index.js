@@ -54,6 +54,7 @@ import "../../personalizar/cursor.css";
 function Billing() {
   const [cards, setCards] = useState([]);
   const [despesas, setDespesas] = useState([]);
+  const [caixa, setCaixa] = useState([]);
   // const [metas, setMetas] = useState([]);
 
   useEffect(() => {
@@ -90,6 +91,10 @@ function Billing() {
       .get("http://localhost:3003/api/despesas", config)
       .then((response) => setDespesas(response.data))
       .catch((error) => console.error("Erro ao buscar dados das despesas:", error));
+    axios
+      .get("http://localhost:3003/api/totalCaixa", config)
+      .then((response) => setCaixa(response.data))
+      .catch((error) => console.error("Erro ao buscar dados do caixa:", error));
     // axios
     //   .get("http://localhost:3003/api/metas", config)
     //   .then((response) => setMetas(response.data))
@@ -143,6 +148,18 @@ function Billing() {
                       title="Despesas Fixas"
                       description="Despesas rotineiras fixas"
                       value={`R$ ${despesas.valor_despesas}`}
+                    />
+                  ))}
+                </Grid>
+                <Grid item xs={12} md={6} xl={3}>
+                  {caixa.map((caixa) => (
+                    <DefaultInfoCard
+                      key={caixa.valor}
+                      color="dark"
+                      icon="money_ammount"
+                      title="Entradas Acumuladas"
+                      description="Entradas fixas acumuladas"
+                      value={`R$ ${caixa.valor}`}
                     />
                   ))}
                 </Grid>

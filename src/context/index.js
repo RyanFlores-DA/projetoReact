@@ -74,7 +74,7 @@ function MaterialUIControllerProvider({ children }) {
     miniSidenav: false,
     transparentSidenav: false,
     whiteSidenav: false,
-    sidenavColor: "info",
+    sidenavColor: "dark", //COR DO BOTÃO DA SIDEBAR
     transparentNavbar: true,
     fixedNavbar: true,
     openConfigurator: false,

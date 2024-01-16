@@ -57,7 +57,7 @@ function Breadcrumbs({ icon, title, route, light }) {
               variant="button"
               fontWeight="regular"
               textTransform="capitalize"
-              color={light ? "white" : "dark"}
+              color={"dark"}
               opacity={light ? 0.8 : 0.5}
               sx={{ lineHeight: 0 }}
             >

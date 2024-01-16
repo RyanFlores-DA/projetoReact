@@ -58,8 +58,8 @@ function Configurator() {
     whiteSidenav,
     darkMode,
   } = controller;
-  const [disabled, setDisabled] = useState(false);
-  const sidenavColors = ["primary", "dark", "info", "success", "warning", "error"];
+  const [disabled, setDisabled] = useState(true);
+  const sidenavColors = ["dark", "error"];
 
   // Use the useEffect hook to change the button state for the sidenav type based on window size.
   useEffect(() => {
@@ -199,7 +199,7 @@ function Configurator() {
                   },
 
                   "&:hover, &:focus, &:active": {
-                    borderColor: darkMode ? white.main : dark.main,
+                    borderColor: dark.main,
                   },
                 })}
                 onClick={() => setSidenavColor(dispatch, color)}
