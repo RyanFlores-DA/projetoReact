@@ -48,6 +48,8 @@ import team2 from "assets/images/team-2.jpg";
 import team3 from "assets/images/team-3.jpg";
 import team4 from "assets/images/team-4.jpg";
 import budge from "assets/images/budget.png";
+import dashboard from "assets/images/painel-de-controle.png";
+import DefaultLineChart from "examples/Charts/LineCharts/DefaultLineChart";
 
 import "../../personalizar/cursor.css";
 
@@ -56,6 +58,17 @@ function Billing() {
   const [despesas, setDespesas] = useState([]);
   const [caixa, setCaixa] = useState([]);
   // const [metas, setMetas] = useState([]);
+
+  const chartData = {
+    labels: ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho"],
+    datasets: [
+      {
+        label: "Geral, gastos mensais",
+        data: [65, 59, 80, 81, 56, 55],
+        color: "dark",
+      },
+    ],
+  };
 
   useEffect(() => {
     const config = {
@@ -164,11 +177,18 @@ function Billing() {
                   ))}
                 </Grid>
                 <Grid item xs={12}>
-                  <PaymentMethod />
+                  <DefaultLineChart
+                    icon={{ color: "dark", component: "icon_name" }} // Substitua "icon_name" pelo seu ícone real
+                    title="Resumo de gastos"
+                    description="Mais detalhas na Aba Dashboard"
+                    height="300px"
+                    chart={chartData}
+                  />
+                  {/* AQUI PODE SUBSTITUIR POR UM GRÁFICO DE LINHAS <PaymentMethod /> */}
                 </Grid>
               </Grid>
             </Grid>
-            <Grid item xs={12} lg={4}>
+            <Grid item xs={10} lg={4}>
               <Invoices />
             </Grid>
           </Grid>

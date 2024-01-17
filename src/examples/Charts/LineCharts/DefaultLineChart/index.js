@@ -46,6 +46,8 @@ import configs from "examples/Charts/LineCharts/DefaultLineChart/configs";
 // Material Dashboard 2 React base styles
 import colors from "assets/theme/base/colors";
 
+import dashboard from "assets/images/painel-de-controle.png";
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -57,7 +59,7 @@ ChartJS.register(
   Filler
 );
 
-function DefaultLineChart({ icon, title, description, height, chart }) {
+function DefaultLineChart({ icon, title, description, height, chart, backgroundImage }) {
   const chartDatasets = chart.datasets
     ? chart.datasets.map((dataset) => ({
         ...dataset,
@@ -113,10 +115,24 @@ function DefaultLineChart({ icon, title, description, height, chart }) {
       {useMemo(
         () => (
           <MDBox height={height}>
+            {backgroundImage && (
+              <img
+                src={dashboard}
+                alt="Background"
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover", // Ou ajuste conforme necessário
+                }}
+              />
+            )}
             <Line data={data} options={options} redraw />
           </MDBox>
         ),
-        [chart, height]
+        [chart, height, backgroundImage]
       )}
     </MDBox>
   );
@@ -151,6 +167,7 @@ DefaultLineChart.propTypes = {
   description: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   chart: PropTypes.objectOf(PropTypes.array).isRequired,
+  backgroundImage: PropTypes.string,
 };
 
 export default DefaultLineChart;
