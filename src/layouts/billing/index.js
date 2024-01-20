@@ -27,6 +27,8 @@ import Footer from "examples/Footer";
 import MasterCard from "examples/Cards/MasterCard";
 import DefaultInfoCard from "examples/Cards/InfoCards/DefaultInfoCard";
 
+import IconButton from "@mui/material/IconButton";
+
 // Billing page components
 import PaymentMethod from "layouts/billing/components/PaymentMethod";
 import Invoices from "layouts/billing/components/Invoices";
@@ -50,8 +52,6 @@ import team4 from "assets/images/team-4.jpg";
 import budge from "assets/images/budget.png";
 import dashboard from "assets/images/painel-de-controle.png";
 import DefaultLineChart from "examples/Charts/LineCharts/DefaultLineChart";
-
-import "../../personalizar/cursor.css";
 
 function Billing() {
   const [cards, setCards] = useState([]);
@@ -184,7 +184,6 @@ function Billing() {
                     height="300px"
                     chart={chartData}
                   />
-                  {/* AQUI PODE SUBSTITUIR POR UM GRÁFICO DE LINHAS <PaymentMethod /> */}
                 </Grid>
               </Grid>
             </Grid>

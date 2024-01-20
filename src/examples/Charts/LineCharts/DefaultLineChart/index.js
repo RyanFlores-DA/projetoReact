@@ -35,6 +35,7 @@ import {
 // @mui material components
 import Card from "@mui/material/Card";
 import Icon from "@mui/material/Icon";
+import Iconn from "@mui/material/Icon";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -48,6 +49,20 @@ import colors from "assets/theme/base/colors";
 
 import dashboard from "assets/images/painel-de-controle.png";
 
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import React, { useState, useEffect } from "react";
+import Datepicker from "react-tailwindcss-datepicker";
+
+import MDInput from "components/MDInput";
+
+import dayjs from "dayjs";
+
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -60,6 +75,35 @@ ChartJS.register(
 );
 
 function DefaultLineChart({ icon, title, description, height, chart, backgroundImage }) {
+  const [menu, setMenu] = useState(null);
+
+  const openMenu = ({ currentTarget }) => setMenu(currentTarget);
+  const closeMenu = () => setMenu(null);
+
+  const [value, setValue] = React.useState(dayjs("2022-04-17"));
+
+  const renderMenu = (
+    <Menu
+      id="simple-menu"
+      anchorEl={menu}
+      anchorOrigin={{
+        vertical: "top",
+        horizontal: "left",
+      }}
+      transformOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+      open={Boolean(menu)}
+      onClose={closeMenu}
+    >
+      <MenuItem onClick={closeMenu}>3 Meses</MenuItem>
+      <MenuItem onClick={closeMenu}>6 Meses</MenuItem>
+      <MenuItem onClick={closeMenu}>Ano atual</MenuItem>
+      <MenuItem onClick={closeMenu}>Personalizar</MenuItem>
+    </Menu>
+  );
+
   const chartDatasets = chart.datasets
     ? chart.datasets.map((dataset) => ({
         ...dataset,
@@ -82,36 +126,62 @@ function DefaultLineChart({ icon, title, description, height, chart, backgroundI
 
   const renderChart = (
     <MDBox py={2} pr={2} pl={icon.component ? 1 : 2}>
-      {title || description ? (
-        <MDBox display="flex" px={description ? 1 : 0} pt={description ? 1 : 0}>
-          {icon.component && (
-            <MDBox
-              width="4rem"
-              height="4rem"
-              bgColor={icon.color || "dark"}
-              variant="gradient"
-              coloredShadow={icon.color || "dark"}
-              borderRadius="xl"
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              color="white"
-              mt={-5}
-              mr={2}
-            >
-              <Icon fontSize="medium">{icon.component}</Icon>
+      <MDBox display="flex" justifyContent="space-between" alignItems="center" p={1}>
+        <MDBox>
+          {title || description ? (
+            <MDBox display="flex" px={description ? 1 : 0} pt={description ? 1 : 0}>
+              {icon.component && (
+                <MDBox
+                  width="4rem"
+                  height="4rem"
+                  bgColor={icon.color || "dark"}
+                  variant="gradient"
+                  coloredShadow={icon.color || "dark"}
+                  borderRadius="xl"
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  color="white"
+                  mt={-5}
+                  mr={2}
+                >
+                  <Icon fontSize="medium">{icon.component}</Icon>
+                </MDBox>
+              )}
+              <MDBox mt={icon.component ? -2 : 0}>
+                {title && <MDTypography variant="h6">{title}</MDTypography>}
+                <MDBox mb={2}>
+                  <MDTypography component="div" variant="button" color="text">
+                    {description}
+                  </MDTypography>
+                </MDBox>
+              </MDBox>
             </MDBox>
-          )}
-          <MDBox mt={icon.component ? -2 : 0}>
-            {title && <MDTypography variant="h6">{title}</MDTypography>}
-            <MDBox mb={2}>
-              <MDTypography component="div" variant="button" color="text">
-                {description}
-              </MDTypography>
-            </MDBox>
-          </MDBox>
+          ) : null}
         </MDBox>
-      ) : null}
+
+        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt">
+          <DemoContainer components={["DatePicker", "DatePicker"]}>
+            <DatePicker
+              label="Data Inicial"
+              defaultValue={dayjs("2024-01-19")}
+              onChange={(newValue) => setValue(newValue)}
+            />
+            <DatePicker
+              label="Data Final"
+              defaultValue={dayjs("2024-01-19")}
+              onChange={(newValue) => setValue(newValue)}
+            />
+          </DemoContainer>
+        </LocalizationProvider>
+
+        <MDBox color="text" px={2}>
+          <Icon sx={{ cursor: "pointer", fontWeight: "bold" }} fontSize="small" onClick={openMenu}>
+            more_vert
+          </Icon>
+        </MDBox>
+        {renderMenu}
+      </MDBox>
       {useMemo(
         () => (
           <MDBox height={height}>
