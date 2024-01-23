@@ -179,26 +179,22 @@ function Billing() {
                   ))}
                 </Grid>
                 <Grid item xs={12}>
-                  {!loading ? (
-                    <DefaultLineChart
-                      icon={{ color: "dark", component: "icon_name" }}
-                      title="Resumo de gastos"
-                      description="Mais detalhes na Aba Dashboard"
-                      height="300px"
-                      chart={{
-                        labels: dados.labels || [],
-                        datasets: [
-                          {
-                            label: "Geral, gastos mensais R$",
-                            data: dados.totalValores || [],
-                            color: "dark",
-                          },
-                        ],
-                      }}
-                    />
-                  ) : (
-                    <p>Carregando...</p>
-                  )}
+                  <DefaultLineChart
+                    icon={{ color: "dark", component: "icon_name" }}
+                    title="Resumo de gastos"
+                    description="Mais detalhas na Aba Dashboard"
+                    height="300px"
+                    chart={{
+                      labels: dados.labels || [],
+                      datasets: [
+                        {
+                          label: "Geral, gastos mensais R$",
+                          data: dados.totalValores || [],
+                          color: "dark",
+                        },
+                      ],
+                    }}
+                  />
                 </Grid>
               </Grid>
             </Grid>

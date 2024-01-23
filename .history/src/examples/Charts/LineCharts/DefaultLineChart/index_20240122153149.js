@@ -77,7 +77,7 @@ ChartJS.register(
 
 function DefaultLineChart({ icon, title, description, height, chart, backgroundImage }) {
   const [menu, setMenu] = useState(null);
-  const [opcao, setOpcao] = useState();
+  const [dados, setDados] = useState();
   const [customizing, setCustomizing] = useState(false);
   const openMenu = ({ currentTarget }) => setMenu(currentTarget);
   const closeMenu = () => {
@@ -87,21 +87,31 @@ function DefaultLineChart({ icon, title, description, height, chart, backgroundI
   const [initialValue, setValueInitial] = React.useState(dayjs("2022-04-17"));
   const [finalValue, setValueFinal] = React.useState(dayjs("2022-04-17"));
 
-  const toggleCustomizing = () => {
-    setOpcao("P");
-    setCustomizing(!customizing);
-    console.log(opcao);
-    closeMenu();
-  };
-  const handleEscolha = (opcao) => {
-    setOpcao(opcao);
-    console.log(opcao);
+  const handleEscolha = async (opcao) => {
     closeMenu(); // Feche o menu após a escolha ser feita
+    try {
+      const config = {
+        headers: {
+          authorization: sessionStorage.getItem("token"),
+        },
+      };
+
+      const response = await axios.get(
+        `http://localhost:3003/api/dashboard/vendas?mes=${opcao}`,
+        config
+      );
+      setDados(response.data);
+      console.log(dados);
+    } catch (error) {
+      console.error("Erro ao buscar datasets:", error);
+    }
   };
-  // axios
-  //     .get("http://localhost:3003/api/cards?primario=S", config)
-  //     .then((response) => setCards(response.data))
-  //     .catch((error) => console.error("Erro ao buscar cartoes:", error));
+
+  const toggleCustomizing = () => {
+    handleEscolha("P");
+    setCustomizing(!customizing);
+    closeMenu(); // Feche o menu ao personalizar
+  };
 
   const renderMenu = (
     <Menu
@@ -121,30 +131,36 @@ function DefaultLineChart({ icon, title, description, height, chart, backgroundI
       <MenuItem onClick={() => handleEscolha(3)}>3 Meses</MenuItem>
       <MenuItem onClick={() => handleEscolha(6)}>6 Meses</MenuItem>
       <MenuItem onClick={() => handleEscolha(3)}>Ano atual</MenuItem>
-      <MenuItem onClick={() => toggleCustomizing}>Personalizar</MenuItem>
+      <MenuItem onClick={toggleCustomizing}>Personalizar</MenuItem>
     </Menu>
   );
 
-  const chartDatasets = chart.datasets
-    ? chart.datasets.map((dataset) => ({
-        ...dataset,
-        tension: 0,
-        pointRadius: 3,
-        borderWidth: 4,
-        backgroundColor: "transparent",
-        fill: true,
-        pointBackgroundColor: colors[dataset.color]
-          ? colors[dataset.color || "dark"].main
-          : colors.dark.main,
-        borderColor: colors[dataset.color]
-          ? colors[dataset.color || "dark"].main
-          : colors.dark.main,
-        maxBarThickness: 6,
-      }))
-    : [];
-  const labels = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho"];
-  // const { data, options } = configs(labels || [], chartDatasets);
-  const { data, options } = configs(chart.labels || [], chartDatasets);
+  useEffect(() => {
+    if (dados) {
+      const chartDatasets = chart.datasets
+        ? chart.datasets.map((dataset) => ({
+            ...dataset,
+            tension: 0,
+            pointRadius: 3,
+            borderWidth: 4,
+            backgroundColor: "transparent",
+            fill: true,
+            pointBackgroundColor: colors[dataset.color]
+              ? colors[dataset.color || "dark"].main
+              : colors.dark.main,
+            borderColor: colors[dataset.color]
+              ? colors[dataset.color || "dark"].main
+              : colors.dark.main,
+            maxBarThickness: 6,
+          }))
+        : [];
+
+      const labels = dados.label || [];
+      const { data, options } = configs(labels, chartDatasets);
+      setChartData({ data, options });
+    }
+  }, [dados, chart]);
+  // const { data, options } = configs(chart.labels || [], chartDatasets);
   const invisible = "false";
   const renderChart = (
     <MDBox py={2} pr={2} pl={icon.component ? 1 : 2}>
@@ -223,10 +239,10 @@ function DefaultLineChart({ icon, title, description, height, chart, backgroundI
                 }}
               />
             )}
-            <Line data={data} options={options} redraw />
+            <Line data={chartData?.data || {}} options={chartData?.options || {}} redraw />
           </MDBox>
         ),
-        [chart, height, backgroundImage]
+        [chartData, height, backgroundImage]
       )}
     </MDBox>
   );

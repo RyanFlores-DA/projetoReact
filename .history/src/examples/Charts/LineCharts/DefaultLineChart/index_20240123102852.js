@@ -77,31 +77,58 @@ ChartJS.register(
 
 function DefaultLineChart({ icon, title, description, height, chart, backgroundImage }) {
   const [menu, setMenu] = useState(null);
-  const [opcao, setOpcao] = useState();
+  const [dados, setDados] = useState({ labels: [], totalValores: [] });
   const [customizing, setCustomizing] = useState(false);
-  const openMenu = ({ currentTarget }) => setMenu(currentTarget);
-  const closeMenu = () => {
-    setMenu(null);
+  const [initialValue, setValueInitial] = useState(dayjs("2022-04-17"));
+  const [finalValue, setValueFinal] = useState(dayjs("2022-04-17"));
+
+  const fetchData = async (mes = 6) => {
+    try {
+      const config = {
+        headers: {
+          authorization: sessionStorage.getItem("token"),
+        },
+      };
+
+      const response = await axios.get(
+        `http://localhost:3003/api/dashboard/vendas?mes=${mes}`,
+        config
+      );
+      const resultados = response.data.dataSets || [];
+      const labels = resultados.map((resultado) => resultado.label);
+      const totalValores = resultados.map((resultado) => parseFloat(resultado.total_valor));
+
+      setDados({
+        labels: labels,
+        totalValores: totalValores,
+      });
+    } catch (error) {
+      console.error("Erro ao buscar datasets:", error);
+    }
   };
 
-  const [initialValue, setValueInitial] = React.useState(dayjs("2022-04-17"));
-  const [finalValue, setValueFinal] = React.useState(dayjs("2022-04-17"));
+  console.log(dados);
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const handleEscolha = async (opcao) => {
+    closeMenu(); // Feche o menu após a escolha ser feita
+    try {
+      await fetchData(opcao);
+    } catch (error) {
+      console.error("Erro ao buscar datasets:", error);
+    }
+  };
 
   const toggleCustomizing = () => {
-    setOpcao("P");
+    handleEscolha("P");
     setCustomizing(!customizing);
-    console.log(opcao);
-    closeMenu();
+    closeMenu(); // Feche o menu ao personalizar
   };
-  const handleEscolha = (opcao) => {
-    setOpcao(opcao);
-    console.log(opcao);
-    closeMenu(); // Feche o menu após a escolha ser feita
-  };
-  // axios
-  //     .get("http://localhost:3003/api/cards?primario=S", config)
-  //     .then((response) => setCards(response.data))
-  //     .catch((error) => console.error("Erro ao buscar cartoes:", error));
+
+  const openMenu = ({ currentTarget }) => setMenu(currentTarget);
+  const closeMenu = () => setMenu(null);
 
   const renderMenu = (
     <Menu
@@ -121,31 +148,34 @@ function DefaultLineChart({ icon, title, description, height, chart, backgroundI
       <MenuItem onClick={() => handleEscolha(3)}>3 Meses</MenuItem>
       <MenuItem onClick={() => handleEscolha(6)}>6 Meses</MenuItem>
       <MenuItem onClick={() => handleEscolha(3)}>Ano atual</MenuItem>
-      <MenuItem onClick={() => toggleCustomizing}>Personalizar</MenuItem>
+      <MenuItem onClick={toggleCustomizing}>Personalizar</MenuItem>
     </Menu>
   );
 
-  const chartDatasets = chart.datasets
-    ? chart.datasets.map((dataset) => ({
-        ...dataset,
-        tension: 0,
-        pointRadius: 3,
-        borderWidth: 4,
-        backgroundColor: "transparent",
-        fill: true,
-        pointBackgroundColor: colors[dataset.color]
-          ? colors[dataset.color || "dark"].main
-          : colors.dark.main,
-        borderColor: colors[dataset.color]
-          ? colors[dataset.color || "dark"].main
-          : colors.dark.main,
-        maxBarThickness: 6,
-      }))
-    : [];
-  const labels = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho"];
-  // const { data, options } = configs(labels || [], chartDatasets);
-  const { data, options } = configs(chart.labels || [], chartDatasets);
-  const invisible = "false";
+  const [chartData, setChartData] = useState(() => {
+    const chartDatasets = chart.datasets
+      ? chart.datasets.map((dataset) => ({
+          ...dataset,
+          tension: 0,
+          pointRadius: 3,
+          borderWidth: 4,
+          backgroundColor: "transparent",
+          fill: true,
+          pointBackgroundColor: colors[dataset.color]
+            ? colors[dataset.color || "dark"].main
+            : colors.dark.main,
+          borderColor: colors[dataset.color]
+            ? colors[dataset.color || "dark"].main
+            : colors.dark.main,
+          maxBarThickness: 6,
+        }))
+      : [];
+
+    const { data, options } = configs(dados.labels || [], chartDatasets);
+
+    return { data, options };
+  });
+
   const renderChart = (
     <MDBox py={2} pr={2} pl={icon.component ? 1 : 2}>
       <MDBox display="flex" justifyContent="space-between" alignItems="center" p={1}>
@@ -219,14 +249,14 @@ function DefaultLineChart({ icon, title, description, height, chart, backgroundI
                   left: 0,
                   width: "100%",
                   height: "100%",
-                  objectFit: "cover", // Ou ajuste conforme necessário
+                  objectFit: "cover",
                 }}
               />
             )}
-            <Line data={data} options={options} redraw />
+            <Line data={chartData.data} options={chartData.options} redraw />
           </MDBox>
         ),
-        [chart, height, backgroundImage]
+        [chart, height, backgroundImage, chartData]
       )}
     </MDBox>
   );
@@ -234,7 +264,6 @@ function DefaultLineChart({ icon, title, description, height, chart, backgroundI
   return title || description ? <Card>{renderChart}</Card> : renderChart;
 }
 
-// Setting default values for the props of DefaultLineChart
 DefaultLineChart.defaultProps = {
   icon: { color: "info", component: "" },
   title: "",
@@ -242,7 +271,6 @@ DefaultLineChart.defaultProps = {
   height: "19.125rem",
 };
 
-// Typechecking props for the DefaultLineChart
 DefaultLineChart.propTypes = {
   icon: PropTypes.shape({
     color: PropTypes.oneOf([
@@ -260,7 +288,7 @@ DefaultLineChart.propTypes = {
   title: PropTypes.string,
   description: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  chart: PropTypes.objectOf(PropTypes.array).isRequired,
+  chart: PropTypes.objectOf(PropTypes.array),
   backgroundImage: PropTypes.string,
 };
 

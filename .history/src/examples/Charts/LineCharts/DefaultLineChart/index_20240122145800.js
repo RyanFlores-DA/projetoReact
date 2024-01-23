@@ -86,22 +86,36 @@ function DefaultLineChart({ icon, title, description, height, chart, backgroundI
 
   const [initialValue, setValueInitial] = React.useState(dayjs("2022-04-17"));
   const [finalValue, setValueFinal] = React.useState(dayjs("2022-04-17"));
+  console.log(`${initialValue.$D}-${initialValue.$M + 1}-${initialValue.$y}`);
 
   const toggleCustomizing = () => {
-    setOpcao("P");
     setCustomizing(!customizing);
-    console.log(opcao);
-    closeMenu();
+    escolha("P");
+    setMenu(null);
   };
-  const handleEscolha = (opcao) => {
-    setOpcao(opcao);
+  const escolha = (escolha) => {
+    switch (escolha) {
+      case 3:
+        setOpcao(3);
+        break;
+      case 6:
+        setOpcao(6);
+        break;
+      case "P":
+        setOpcao("P");
+        break;
+
+      default:
+        setOpcao(3);
+        break;
+    }
+    // axios
+    //     .get("http://localhost:3003/api/cards?primario=S", config)
+    //     .then((response) => setCards(response.data))
+    //     .catch((error) => console.error("Erro ao buscar cartoes:", error));
     console.log(opcao);
-    closeMenu(); // Feche o menu após a escolha ser feita
+    setMenu(null);
   };
-  // axios
-  //     .get("http://localhost:3003/api/cards?primario=S", config)
-  //     .then((response) => setCards(response.data))
-  //     .catch((error) => console.error("Erro ao buscar cartoes:", error));
 
   const renderMenu = (
     <Menu
@@ -118,10 +132,10 @@ function DefaultLineChart({ icon, title, description, height, chart, backgroundI
       open={Boolean(menu)}
       onClose={closeMenu}
     >
-      <MenuItem onClick={() => handleEscolha(3)}>3 Meses</MenuItem>
-      <MenuItem onClick={() => handleEscolha(6)}>6 Meses</MenuItem>
-      <MenuItem onClick={() => handleEscolha(3)}>Ano atual</MenuItem>
-      <MenuItem onClick={() => toggleCustomizing}>Personalizar</MenuItem>
+      <MenuItem onClick={escolha(3)}>3 Meses</MenuItem>
+      <MenuItem onClick={escolha(6)}>6 Meses</MenuItem>
+      <MenuItem onClick={escolha(3)}>Ano atual</MenuItem>
+      <MenuItem onClick={toggleCustomizing}>Personalizar</MenuItem>
     </Menu>
   );
 
@@ -143,8 +157,8 @@ function DefaultLineChart({ icon, title, description, height, chart, backgroundI
       }))
     : [];
   const labels = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho"];
-  // const { data, options } = configs(labels || [], chartDatasets);
-  const { data, options } = configs(chart.labels || [], chartDatasets);
+  const { data, options } = configs(labels || [], chartDatasets);
+  // const { data, options } = configs(chart.labels || [], chartDatasets);
   const invisible = "false";
   const renderChart = (
     <MDBox py={2} pr={2} pl={icon.component ? 1 : 2}>

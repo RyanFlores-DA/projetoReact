@@ -102,10 +102,10 @@ function Billing() {
         const labels = resultados.map((resultado) => resultado.label);
         const totalValores = resultados.map((resultado) => parseFloat(resultado.total_valor));
 
-        setDados({
-          labels: labels,
-          totalValores: totalValores,
-        });
+        // setDados({
+        //   labels: labels,
+        //   totalValores: totalValores,
+        // });
         console.log(response.data.dataSets);
         setLoading(false);
       })

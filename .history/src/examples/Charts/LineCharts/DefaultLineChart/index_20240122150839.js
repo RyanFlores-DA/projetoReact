@@ -143,8 +143,8 @@ function DefaultLineChart({ icon, title, description, height, chart, backgroundI
       }))
     : [];
   const labels = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho"];
-  // const { data, options } = configs(labels || [], chartDatasets);
-  const { data, options } = configs(chart.labels || [], chartDatasets);
+  const { data, options } = configs(labels || [], chartDatasets);
+  // const { data, options } = configs(chart.labels || [], chartDatasets);
   const invisible = "false";
   const renderChart = (
     <MDBox py={2} pr={2} pl={icon.component ? 1 : 2}>

@@ -57,7 +57,6 @@ import Datepicker from "react-tailwindcss-datepicker";
 import MDInput from "components/MDInput";
 
 import dayjs from "dayjs";
-import axios from "axios";
 
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -77,31 +76,12 @@ ChartJS.register(
 
 function DefaultLineChart({ icon, title, description, height, chart, backgroundImage }) {
   const [menu, setMenu] = useState(null);
-  const [opcao, setOpcao] = useState();
-  const [customizing, setCustomizing] = useState(false);
+
   const openMenu = ({ currentTarget }) => setMenu(currentTarget);
-  const closeMenu = () => {
-    setMenu(null);
-  };
+  const closeMenu = () => setMenu(null);
 
-  const [initialValue, setValueInitial] = React.useState(dayjs("2022-04-17"));
-  const [finalValue, setValueFinal] = React.useState(dayjs("2022-04-17"));
-
-  const toggleCustomizing = () => {
-    setOpcao("P");
-    setCustomizing(!customizing);
-    console.log(opcao);
-    closeMenu();
-  };
-  const handleEscolha = (opcao) => {
-    setOpcao(opcao);
-    console.log(opcao);
-    closeMenu(); // Feche o menu após a escolha ser feita
-  };
-  // axios
-  //     .get("http://localhost:3003/api/cards?primario=S", config)
-  //     .then((response) => setCards(response.data))
-  //     .catch((error) => console.error("Erro ao buscar cartoes:", error));
+  const [value, setValue] = React.useState(dayjs("2022-04-17"));
+  console.log(`${value.$D}-${value.$M +1 }-${value.$y}`);
 
   const renderMenu = (
     <Menu
@@ -118,10 +98,10 @@ function DefaultLineChart({ icon, title, description, height, chart, backgroundI
       open={Boolean(menu)}
       onClose={closeMenu}
     >
-      <MenuItem onClick={() => handleEscolha(3)}>3 Meses</MenuItem>
-      <MenuItem onClick={() => handleEscolha(6)}>6 Meses</MenuItem>
-      <MenuItem onClick={() => handleEscolha(3)}>Ano atual</MenuItem>
-      <MenuItem onClick={() => toggleCustomizing}>Personalizar</MenuItem>
+      <MenuItem onClick={closeMenu}>3 Meses</MenuItem>
+      <MenuItem onClick={closeMenu}>6 Meses</MenuItem>
+      <MenuItem onClick={closeMenu}>Ano atual</MenuItem>
+      <MenuItem onClick={closeMenu}>Personalizar</MenuItem>
     </Menu>
   );
 
@@ -142,10 +122,9 @@ function DefaultLineChart({ icon, title, description, height, chart, backgroundI
         maxBarThickness: 6,
       }))
     : [];
-  const labels = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho"];
-  // const { data, options } = configs(labels || [], chartDatasets);
+
   const { data, options } = configs(chart.labels || [], chartDatasets);
-  const invisible = "false";
+
   const renderChart = (
     <MDBox py={2} pr={2} pl={icon.component ? 1 : 2}>
       <MDBox display="flex" justifyContent="space-between" alignItems="center" p={1}>
@@ -181,24 +160,24 @@ function DefaultLineChart({ icon, title, description, height, chart, backgroundI
             </MDBox>
           ) : null}
         </MDBox>
-        {customizing && (
-          <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt">
-            <DemoContainer components={["DatePicker", "DatePicker"]}>
-              <DatePicker
-                label="Data Inicial"
-                format="D/M/YYYY"
-                defaultValue={dayjs("2024-01-19")}
-                onChange={(newValue) => setValueInitial(newValue)}
-              />
-              <DatePicker
-                label="Data Final"
-                format="D/M/YYYY"
-                defaultValue={dayjs("2024-01-19")}
-                onChange={(newValue) => setValueFinal(newValue)}
-              />
-            </DemoContainer>
-          </LocalizationProvider>
-        )}
+
+        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt">
+          <DemoContainer components={["DatePicker", "DatePicker"]}>
+            <DatePicker
+              label="Data Inicial"
+              format="D/M/YYYY"
+              defaultValue={dayjs("2024-01-19")}
+              onChange={(newValue) => setValue(newValue)}
+            />
+            <DatePicker
+              label="Data Final"
+              format="D/M/YYYY"
+              defaultValue={dayjs("2024-01-19")}
+              onChange={(newValue) => setValue(newValue)}
+            />
+          </DemoContainer>
+        </LocalizationProvider>
+
         <MDBox color="text" px={2}>
           <Icon sx={{ cursor: "pointer", fontWeight: "bold" }} fontSize="small" onClick={openMenu}>
             more_vert

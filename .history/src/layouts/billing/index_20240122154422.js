@@ -61,6 +61,17 @@ function Billing() {
   const [loading, setLoading] = useState(true);
   // const [metas, setMetas] = useState([]);
 
+  const chartData = {
+    labels: dados.label,
+    datasets: [
+      {
+        label: "Geral, gastos mensais",
+        data: [65, 59, 80],
+        color: "dark",
+      },
+    ],
+  };
+
   useEffect(() => {
     const config = {
       headers: {
@@ -96,17 +107,9 @@ function Billing() {
       .then((response) => setCaixa(response.data))
       .catch((error) => console.error("Erro ao buscar dados do caixa:", error));
     axios
-      .get(`http://localhost:3003/api/dashboard/vendas?mes=6`, config)
+      .get(`http://localhost:3003/api/dashboard/vendas?mes=3`, config)
       .then((response) => {
-        const resultados = response.data.dataSets || [];
-        const labels = resultados.map((resultado) => resultado.label);
-        const totalValores = resultados.map((resultado) => parseFloat(resultado.total_valor));
-
-        setDados({
-          labels: labels,
-          totalValores: totalValores,
-        });
-        console.log(response.data.dataSets);
+        setDados(response.data);
         setLoading(false);
       })
       .catch((error) => console.error("Erro ao buscar datasets:", error));
@@ -179,26 +182,13 @@ function Billing() {
                   ))}
                 </Grid>
                 <Grid item xs={12}>
-                  {!loading ? (
-                    <DefaultLineChart
-                      icon={{ color: "dark", component: "icon_name" }}
-                      title="Resumo de gastos"
-                      description="Mais detalhes na Aba Dashboard"
-                      height="300px"
-                      chart={{
-                        labels: dados.labels || [],
-                        datasets: [
-                          {
-                            label: "Geral, gastos mensais R$",
-                            data: dados.totalValores || [],
-                            color: "dark",
-                          },
-                        ],
-                      }}
-                    />
-                  ) : (
-                    <p>Carregando...</p>
-                  )}
+                  <DefaultLineChart
+                    icon={{ color: "dark", component: "icon_name" }} // iconeqqqqqqqqqq
+                    title="Resumo de gastos"
+                    description="Mais detalhas na Aba Dashboard"
+                    height="300px"
+                    chart={chartData}
+                  />
                 </Grid>
               </Grid>
             </Grid>
