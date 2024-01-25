@@ -81,20 +81,15 @@ function DefaultLineChart({ icon, title, description, height, chart, backgroundI
   const [customizing, setCustomizing] = useState(false);
   const [loading, setLoading] = useState(true);
   const [dados, setDados] = useState();
-  const openMenu = ({ currentTarget }) => setMenu(currentTarget);
-  const closeMenu = () => {
-    setMenu(null);
-  };
-
   const [initialValue, setValueInitial] = React.useState(dayjs("2022-04-17"));
   const [finalValue, setValueFinal] = React.useState(dayjs("2022-04-17"));
 
+  const config = {
+    headers: {
+      authorization: sessionStorage.getItem("token"),
+    },
+  };
   useEffect(() => {
-    const config = {
-      headers: {
-        authorization: sessionStorage.getItem("token"),
-      },
-    };
     axios
       .get(`http://localhost:3003/api/dashboard/vendas?mes=6`, config)
       .then((response) => {
@@ -106,15 +101,33 @@ function DefaultLineChart({ icon, title, description, height, chart, backgroundI
           labels: labels,
           totalValores: totalValores,
         });
-        console.log(response.data.dataSets);
         setLoading(false);
       })
-      .catch((error) => console.error("Erro ao buscar datasets:", error));
+      .catch((error) => {
+        console.error("Erro ao buscar datasets:", error);
+        setLoading(false);
+      });
   }, []);
 
-  const handleEscolha = async (opcao) => {
+  const handleEscolha = (opcao) => {
+    axios
+      .get(`http://localhost:3003/api/dashboard/vendas?mes=${opcao}`, config)
+      .then((response) => {
+        const resultados = response.data.dataSets || [];
+        const labels = resultados.map((resultado) => resultado.label);
+        const totalValores = resultados.map((resultado) => parseFloat(resultado.total_valor));
+
+        setDados({
+          labels: labels,
+          totalValores: totalValores,
+        });
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Erro ao buscar datasets:", error);
+        setLoading(false);
+      });
     setOpcao(opcao);
-    console.log(opcao);
     closeMenu(); // Feche o menu após a escolha ser feita
   };
 
@@ -124,6 +137,63 @@ function DefaultLineChart({ icon, title, description, height, chart, backgroundI
     closeMenu(); // Feche o menu ao personalizar
   };
 
+  const openMenu = ({ currentTarget }) => setMenu(currentTarget);
+  const closeMenu = () => {
+    setMenu(null);
+  };
+
+  let chartData = {
+    labels: [],
+    datasets: [
+      {
+        label: "Dados Indisponíveis",
+        data: [0],
+        color: "dark",
+      },
+    ],
+  };
+
+  if (!loading && dados && dados.labels && dados.totalValores) {
+    console.log(dados.labels);
+    chartData = {
+      labels: dados.labels,
+      datasets: [
+        {
+          label: "Geral, gastos mensais R$",
+          data: dados.totalValores,
+          color: "dark",
+        },
+      ],
+    };
+  } else if (dados && dados.labels && dados.totalValores) {
+    chartData = {
+      labels: ["I"],
+      datasets: [
+        {
+          label: "Geral, gastos mensais R$",
+          data: [0],
+          color: "dark",
+        },
+      ],
+    };
+  }
+
+  const chartDatasets = chartData.datasets.map((dataset) => ({
+    ...dataset,
+    tension: 0,
+    pointRadius: 3,
+    borderWidth: 4,
+    backgroundColor: "transparent",
+    fill: true,
+    pointBackgroundColor: colors[dataset.color]
+      ? colors[dataset.color || "dark"].main
+      : colors.dark.main,
+    borderColor: colors[dataset.color] ? colors[dataset.color || "dark"].main : colors.dark.main,
+    maxBarThickness: 6,
+  }));
+
+  const labels = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho"];
+  const { data, options } = configs(chartData.labels || [], chartDatasets);
   const renderMenu = (
     <Menu
       id="simple-menu"
@@ -145,153 +215,106 @@ function DefaultLineChart({ icon, title, description, height, chart, backgroundI
       <MenuItem onClick={toggleCustomizing}>Personalizar</MenuItem>
     </Menu>
   );
-  if (!loading && dados && dados.labels && dados.totalValores) {
-    console.log("Dados prontos ?");
-    chart = {
-      labels: ["I"],
-      datasets: [
-        {
-          label: "Geral, gastos mensais R$",
-          data: [0],
-          color: "dark",
-        },
-      ],
-    };
-  } else if (dados && dados.labels && dados.totalValores) {
-    chart = {
-      labels: dados.labels,
-      datasets: [
-        {
-          label: "Geral, gastos mensais R$",
-          data: dados.totalValores,
-          color: "dark",
-        },
-      ],
-    };
-  } else {
-    // Se os dados ou alguma propriedade não estiverem definidos, você pode lidar com isso aqui
-    console.error("Dados não disponíveis ou incompletos.");
-    chart = {
-      labels: [],
-      datasets: [
-        {
-          label: "Dados Indisponíveis",
-          data: [0],
-          color: "dark",
-        },
-      ],
-    };
-  }
-  const chartDatasets = chart.datasets
-    ? chart.datasets.map((dataset) => ({
-        ...dataset,
-        tension: 0,
-        pointRadius: 3,
-        borderWidth: 4,
-        backgroundColor: "transparent",
-        fill: true,
-        pointBackgroundColor: colors[dataset.color]
-          ? colors[dataset.color || "dark"].main
-          : colors.dark.main,
-        borderColor: colors[dataset.color]
-          ? colors[dataset.color || "dark"].main
-          : colors.dark.main,
-        maxBarThickness: 6,
-      }))
-    : [];
-  const labels = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho"];
-  // const { data, options } = configs(labels || [], chartDatasets);
-  const { data, options } = configs(chart.labels || [], chartDatasets);
-  const invisible = "false";
-  const renderChart = (
-    <MDBox py={2} pr={2} pl={icon.component ? 1 : 2}>
-      <MDBox display="flex" justifyContent="space-between" alignItems="center" p={1}>
-        <MDBox>
-          {title || description ? (
-            <MDBox display="flex" px={description ? 1 : 0} pt={description ? 1 : 0}>
-              {icon.component && (
-                <MDBox
-                  width="4rem"
-                  height="4rem"
-                  bgColor={icon.color || "dark"}
-                  variant="gradient"
-                  coloredShadow={icon.color || "dark"}
-                  borderRadius="xl"
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
-                  color="white"
-                  mt={-5}
-                  mr={2}
-                >
-                  <Icon fontSize="medium">{icon.component}</Icon>
-                </MDBox>
-              )}
-              <MDBox mt={icon.component ? -2 : 0}>
-                {title && <MDTypography variant="h6">{title}</MDTypography>}
-                <MDBox mb={2}>
-                  <MDTypography component="div" variant="button" color="text">
-                    {description}
-                  </MDTypography>
+
+  const renderChart = useMemo(
+    () => (
+      <MDBox py={2} pr={2} pl={icon.component ? 1 : 2}>
+        <MDBox display="flex" justifyContent="space-between" alignItems="center" p={1}>
+          <MDBox>
+            {(title || description) && (
+              <MDBox display="flex" px={description ? 1 : 0} pt={description ? 1 : 0}>
+                {icon.component && (
+                  <MDBox
+                    width="4rem"
+                    height="4rem"
+                    bgColor={icon.color || "dark"}
+                    variant="gradient"
+                    coloredShadow={icon.color || "dark"}
+                    borderRadius="xl"
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    color="white"
+                    mt={-5}
+                    mr={2}
+                  >
+                    <Icon fontSize="medium">{icon.component}</Icon>
+                  </MDBox>
+                )}
+                <MDBox mt={icon.component ? -2 : 0}>
+                  {title && <MDTypography variant="h6">{title}</MDTypography>}
+                  <MDBox mb={2}>
+                    <MDTypography component="div" variant="button" color="text">
+                      {description}
+                    </MDTypography>
+                  </MDBox>
                 </MDBox>
               </MDBox>
-            </MDBox>
-          ) : null}
-        </MDBox>
-        {customizing && (
-          <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt">
-            <DemoContainer components={["DatePicker", "DatePicker"]}>
-              <DatePicker
-                label="Data Inicial"
-                format="D/M/YYYY"
-                defaultValue={dayjs("2024-01-19")}
-                onChange={(newValue) => setValueInitial(newValue)}
-              />
-              <DatePicker
-                label="Data Final"
-                format="D/M/YYYY"
-                defaultValue={dayjs("2024-01-19")}
-                onChange={(newValue) => setValueFinal(newValue)}
-              />
-            </DemoContainer>
-          </LocalizationProvider>
-        )}
-        <MDBox color="text" px={2}>
-          <Icon sx={{ cursor: "pointer", fontWeight: "bold" }} fontSize="small" onClick={openMenu}>
-            more_vert
-          </Icon>
-        </MDBox>
-        {renderMenu}
-      </MDBox>
-      {useMemo(
-        () => (
-          <MDBox height={height}>
-            {backgroundImage && (
-              <img
-                src={dashboard}
-                alt="Background"
-                style={{
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover", // Ou ajuste conforme necessário
-                }}
-              />
             )}
-            <Line data={data} options={options} redraw />
           </MDBox>
-        ),
-        [chart, height, backgroundImage]
-      )}
-    </MDBox>
+          {customizing && (
+            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt">
+              <DemoContainer components={["DatePicker", "DatePicker"]}>
+                <DatePicker
+                  label="Data Inicial"
+                  format="D/M/YYYY"
+                  defaultValue={dayjs("2024-01-19")}
+                  onChange={(newValue) => setValueInitial(newValue)}
+                />
+                <DatePicker
+                  label="Data Final"
+                  format="D/M/YYYY"
+                  defaultValue={dayjs("2024-01-19")}
+                  onChange={(newValue) => setValueFinal(newValue)}
+                />
+              </DemoContainer>
+            </LocalizationProvider>
+          )}
+          <MDBox color="text" px={2}>
+            <Icon
+              sx={{ cursor: "pointer", fontWeight: "bold" }}
+              fontSize="small"
+              onClick={openMenu}
+            >
+              more_vert
+            </Icon>
+          </MDBox>
+          {renderMenu}
+        </MDBox>
+        <MDBox height={height}>
+          {backgroundImage && (
+            <img
+              src={dashboard}
+              alt="Background"
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                objectFit: "cover", // Ou ajuste conforme necessário
+              }}
+            />
+          )}
+          <Line data={data} options={options} redraw />
+        </MDBox>
+      </MDBox>
+    ),
+    [
+      chartData,
+      height,
+      backgroundImage,
+      customizing,
+      icon.component,
+      icon.color,
+      title,
+      description,
+    ]
   );
 
   return title || description ? <Card>{renderChart}</Card> : renderChart;
 }
 
-// Setting default values for the props of DefaultLineChart
 DefaultLineChart.defaultProps = {
   icon: { color: "info", component: "" },
   title: "",
@@ -299,7 +322,6 @@ DefaultLineChart.defaultProps = {
   height: "19.125rem",
 };
 
-// Typechecking props for the DefaultLineChart
 DefaultLineChart.propTypes = {
   icon: PropTypes.shape({
     color: PropTypes.oneOf([

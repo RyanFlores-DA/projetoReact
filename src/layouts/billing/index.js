@@ -67,8 +67,7 @@ function Billing() {
         authorization: sessionStorage.getItem("token"),
       },
     };
-    console.log(!sessionStorage.getItem("redirect"));
-    console.log(sessionStorage.getItem("redirect"));
+
     if (sessionStorage.getItem("redirect") === null) {
     }
 
