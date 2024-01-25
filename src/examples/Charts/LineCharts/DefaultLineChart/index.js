@@ -76,8 +76,8 @@ ChartJS.register(
 );
 
 function DefaultLineChart({ icon, title, description, height, chart, backgroundImage }) {
+  console.log("Recarrega dashboard");
   const [menu, setMenu] = useState(null);
-  const [opcao, setOpcao] = useState();
   const [customizing, setCustomizing] = useState(false);
   const [loading, setLoading] = useState(true);
   const [dados, setDados] = useState();
@@ -93,6 +93,7 @@ function DefaultLineChart({ icon, title, description, height, chart, backgroundI
     axios
       .get(`http://localhost:3003/api/dashboard/vendas?mes=6`, config)
       .then((response) => {
+        console.log("Status da resposta".response.status);
         const resultados = response.data.dataSets || [];
         const labels = resultados.map((resultado) => resultado.label);
         const totalValores = resultados.map((resultado) => parseFloat(resultado.total_valor));
@@ -104,7 +105,10 @@ function DefaultLineChart({ icon, title, description, height, chart, backgroundI
         setLoading(false);
       })
       .catch((error) => {
-        console.error("Erro ao buscar datasets:", error);
+        if (!error && error.response.status == 403) {
+          sessionStorage.setItem("redirect", false);
+          window.location.href = "/authentication/sign-in";
+        }
         setLoading(false);
       });
   }, []);
@@ -121,20 +125,19 @@ function DefaultLineChart({ icon, title, description, height, chart, backgroundI
           labels: labels,
           totalValores: totalValores,
         });
-        setLoading(false);
+        // setLoading(false);
       })
       .catch((error) => {
         console.error("Erro ao buscar datasets:", error);
         setLoading(false);
       });
-    setOpcao(opcao);
     closeMenu(); // Feche o menu após a escolha ser feita
   };
 
   const toggleCustomizing = () => {
-    handleEscolha("P");
+    // handleEscolha("P");
     setCustomizing(!customizing);
-    closeMenu(); // Feche o menu ao personalizar
+    // closeMenu(); // Feche o menu ao personalizar
   };
 
   const openMenu = ({ currentTarget }) => setMenu(currentTarget);
@@ -154,7 +157,6 @@ function DefaultLineChart({ icon, title, description, height, chart, backgroundI
   };
 
   if (!loading && dados && dados.labels && dados.totalValores) {
-    console.log(dados.labels);
     chartData = {
       labels: dados.labels,
       datasets: [

@@ -40,6 +40,11 @@ import token from "../authentication/access/auth";
 
 import Header from "layouts/profile/components/Header";
 
+//menu
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Icon from "@mui/material/Icon";
+
 // Images
 import homeDecor1 from "assets/images/home-decor-1.jpg";
 import homeDecor2 from "assets/images/home-decor-2.jpg";
@@ -60,6 +65,10 @@ function Billing() {
   const [dados, setDados] = useState();
   const [loading, setLoading] = useState(true);
   // const [metas, setMetas] = useState([]);
+
+  function oi() {
+    console.log("oi");
+  }
 
   useEffect(() => {
     const config = {
