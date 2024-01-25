@@ -79,6 +79,8 @@ function DefaultLineChart({ icon, title, description, height, chart, backgroundI
   const [menu, setMenu] = useState(null);
   const [opcao, setOpcao] = useState();
   const [customizing, setCustomizing] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [dados, setDados] = useState();
   const openMenu = ({ currentTarget }) => setMenu(currentTarget);
   const closeMenu = () => {
     setMenu(null);
@@ -86,6 +88,29 @@ function DefaultLineChart({ icon, title, description, height, chart, backgroundI
 
   const [initialValue, setValueInitial] = React.useState(dayjs("2022-04-17"));
   const [finalValue, setValueFinal] = React.useState(dayjs("2022-04-17"));
+
+  useEffect(() => {
+    const config = {
+      headers: {
+        authorization: sessionStorage.getItem("token"),
+      },
+    };
+    axios
+      .get(`http://localhost:3003/api/dashboard/vendas?mes=6`, config)
+      .then((response) => {
+        const resultados = response.data.dataSets || [];
+        const labels = resultados.map((resultado) => resultado.label);
+        const totalValores = resultados.map((resultado) => parseFloat(resultado.total_valor));
+
+        setDados({
+          labels: labels,
+          totalValores: totalValores,
+        });
+        console.log(response.data.dataSets);
+        setLoading(false);
+      })
+      .catch((error) => console.error("Erro ao buscar datasets:", error));
+  }, []);
 
   const handleEscolha = async (opcao) => {
     setOpcao(opcao);
@@ -120,7 +145,43 @@ function DefaultLineChart({ icon, title, description, height, chart, backgroundI
       <MenuItem onClick={toggleCustomizing}>Personalizar</MenuItem>
     </Menu>
   );
-
+  if (!loading && dados && dados.labels && dados.totalValores) {
+    console.log("Dados prontos ?");
+    chart = {
+      labels: ["I"],
+      datasets: [
+        {
+          label: "Geral, gastos mensais R$",
+          data: [0],
+          color: "dark",
+        },
+      ],
+    };
+  } else if (dados && dados.labels && dados.totalValores) {
+    chart = {
+      labels: dados.labels,
+      datasets: [
+        {
+          label: "Geral, gastos mensais R$",
+          data: dados.totalValores,
+          color: "dark",
+        },
+      ],
+    };
+  } else {
+    // Se os dados ou alguma propriedade não estiverem definidos, você pode lidar com isso aqui
+    console.error("Dados não disponíveis ou incompletos.");
+    chart = {
+      labels: [],
+      datasets: [
+        {
+          label: "Dados Indisponíveis",
+          data: [0],
+          color: "dark",
+        },
+      ],
+    };
+  }
   const chartDatasets = chart.datasets
     ? chart.datasets.map((dataset) => ({
         ...dataset,
@@ -256,7 +317,7 @@ DefaultLineChart.propTypes = {
   title: PropTypes.string,
   description: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  chart: PropTypes.objectOf(PropTypes.array).isRequired,
+  chart: PropTypes.objectOf(PropTypes.array),
   backgroundImage: PropTypes.string,
 };
 
