@@ -1,6 +1,6 @@
 /**
 =========================================================
-* Material Dashboard 2  React - v2.2.0
+* Material Dashboard 2 React - v2.2.0
 =========================================================
 
 * Product Page: https://www.creative-tim.com/product/material-dashboard-react
@@ -13,12 +13,21 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useMemo } from "react";
+import { useState, useMemo } from "react";
 
-// porp-types is a library for typechecking of props
-import PropTypes from "prop-types";
+// @mui material components
+import Card from "@mui/material/Card";
+import Icon from "@mui/material/Icon";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 
-// react-chartjs-2 components
+// Material Dashboard 2 React components
+import MDBox from "components/MDBox";
+import MDTypography from "components/MDTypography";
+import configs from "examples/Charts/LineCharts/DefaultLineChart/configs";
+// Material Dashboard 2 React examples
+import DataTable from "examples/Tables/DataTable";
+import colors from "assets/theme/base/colors";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -32,30 +41,6 @@ import {
   Filler,
 } from "chart.js";
 
-// @mui material components
-import Card from "@mui/material/Card";
-import Icon from "@mui/material/Icon";
-import Iconn from "@mui/material/Icon";
-
-// Material Dashboard 2 React components
-import MDBox from "components/MDBox";
-import MDTypography from "components/MDTypography";
-
-// DefaultLineChart configurations
-import configs from "examples/Charts/LineCharts/DefaultLineChart/configs";
-
-// Material Dashboard 2 React base styles
-import colors from "assets/theme/base/colors";
-
-import dashboard from "assets/images/painel-de-controle.png";
-
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import React, { useState, useEffect } from "react";
-import Datepicker from "react-tailwindcss-datepicker";
-
-import MDInput from "components/MDInput";
-
 import dayjs from "dayjs";
 import axios from "axios";
 
@@ -63,96 +48,111 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import React, { useEffect } from "react";
+// Data
+import data from "./data/index";
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-  Filler
-);
+function LineChart() {
+  const { columns, rows } = data();
+  const [menu, setMenu] = useState(null);
 
-function LineDashboard() {
-  <MDBox py={2} pr={2} pl={icon.component ? 1 : 2}>
-    <MDBox display="flex" justifyContent="space-between" alignItems="center" p={1}>
-      <MDBox>
-        {(title || description) && (
-          <MDBox display="flex" px={description ? 1 : 0} pt={description ? 1 : 0}>
-            {icon.component && (
-              <MDBox
-                width="4rem"
-                height="4rem"
-                bgColor={icon.color || "dark"}
-                variant="gradient"
-                coloredShadow={icon.color || "dark"}
-                borderRadius="xl"
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                color="white"
-                mt={-5}
-                mr={2}
-              >
-                <Icon fontSize="medium">{icon.component}</Icon>
-              </MDBox>
-            )}
-            <MDBox mt={icon.component ? -2 : 0}>
-              {title && <MDTypography variant="h6">{title}</MDTypography>}
-              <MDBox mb={2}>
-                <MDTypography component="div" variant="button" color="text">
-                  {description}
-                </MDTypography>
-              </MDBox>
-            </MDBox>
+  const openMenu = ({ currentTarget }) => setMenu(currentTarget);
+  const closeMenu = () => setMenu(null);
+  const dataa = {
+    labels: ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho"],
+    datasets: [
+      {
+        label: "Vendas Mensais",
+        data: [100, 200, 150, 300, 200, 400], // Dados das vendas ao longo dos meses
+        tension: 0,
+        pointRadius: 3,
+        borderWidth: 2,
+        backgroundColor: "transparent",
+        fill: true,
+        pointBackgroundColor: "dark", // Cor dos pontos no gráfico
+        borderColor: "dark", // Cor da linha do gráfico
+        maxBarThickness: 6,
+      },
+    ],
+  };
+
+  // Definição das opções do gráfico
+  const options = {
+    scales: {
+      y: {
+        beginAtZero: true, // Começa o eixo Y a partir de zero
+      },
+    },
+  };
+  const renderChart = (
+    <MDBox py={2} pr={2} pl={"icon_comum" ? 1 : 2}>
+      <MDBox height={"300px"}>
+        <Line data={dataa} options={options} />
+      </MDBox>
+    </MDBox>
+  );
+  const renderMenu = (
+    <Menu
+      id="simple-menu"
+      anchorEl={menu}
+      anchorOrigin={{
+        vertical: "top",
+        horizontal: "left",
+      }}
+      transformOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+      open={Boolean(menu)}
+      onClose={closeMenu}
+    >
+      <MenuItem onClick={closeMenu}>Action</MenuItem>
+      <MenuItem onClick={closeMenu}>Another action</MenuItem>
+      <MenuItem onClick={closeMenu}>Something else</MenuItem>
+    </Menu>
+  );
+
+  return (
+    <Card>
+      <MDBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
+        <MDBox>
+          <MDTypography variant="h6" gutterBottom>
+            Projects
+          </MDTypography>
+          <MDBox display="flex" alignItems="center" lineHeight={0}>
+            <Icon
+              sx={{
+                fontWeight: "bold",
+                color: ({ palette: { info } }) => info.main,
+                mt: -0.5,
+              }}
+            >
+              done
+            </Icon>
+            <MDTypography variant="button" fontWeight="regular" color="text">
+              &nbsp;<strong>30 done</strong> this month
+            </MDTypography>
           </MDBox>
-        )}
+        </MDBox>
+        <MDBox color="text" px={2}>
+          <Icon sx={{ cursor: "pointer", fontWeight: "bold" }} fontSize="small" onClick={openMenu}>
+            more_vert
+          </Icon>
+        </MDBox>
+        {renderMenu}
       </MDBox>
-      {customizing && (
-        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt">
-          <DemoContainer components={["DatePicker", "DatePicker"]}>
-            <DatePicker
-              label="Data Inicial"
-              format="D/M/YYYY"
-              defaultValue={dayjs("2024-01-19")}
-              onChange={(newValue) => setValueInitial(newValue)}
-            />
-            <DatePicker
-              label="Data Final"
-              format="D/M/YYYY"
-              defaultValue={dayjs("2024-01-19")}
-              onChange={(newValue) => setValueFinal(newValue)}
-            />
-          </DemoContainer>
-        </LocalizationProvider>
-      )}
-      <MDBox color="text" px={2}>
-        <Icon sx={{ cursor: "pointer", fontWeight: "bold" }} fontSize="small" onClick={openMenu}>
-          more_vert
-        </Icon>
+      <MDBox>
+        {renderChart}
+        {/* <DataTable
+          table={{ columns, rows }}
+          showTotalEntries={false}
+          isSorted={false}
+          noEndBorder
+          entriesPerPage={false}
+        /> */}
       </MDBox>
-      {renderMenu}
-    </MDBox>
-    <MDBox height={height}>
-      {backgroundImage && (
-        <img
-          src={dashboard}
-          alt="Background"
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            objectFit: "cover", // Ou ajuste conforme necessário
-          }}
-        />
-      )}
-      <Line data={data} options={options} redraw />
-    </MDBox>
-  </MDBox>;
+    </Card>
+  );
 }
 
-export default DefaultLineChart;
+export default LineChart;

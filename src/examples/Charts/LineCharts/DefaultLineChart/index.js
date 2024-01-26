@@ -137,7 +137,7 @@ function DefaultLineChart({ icon, title, description, height, chart, backgroundI
   const toggleCustomizing = () => {
     // handleEscolha("P");
     setCustomizing(!customizing);
-    // closeMenu(); // Feche o menu ao personalizar
+    closeMenu(); // Feche o menu ao personalizar
   };
 
   const openMenu = ({ currentTarget }) => setMenu(currentTarget);
@@ -169,11 +169,11 @@ function DefaultLineChart({ icon, title, description, height, chart, backgroundI
     };
   } else if (dados && dados.labels && dados.totalValores) {
     chartData = {
-      labels: ["I"],
+      labels: dados.labels,
       datasets: [
         {
           label: "Geral, gastos mensais R$",
-          data: [0],
+          data: dados.totalValores,
           color: "dark",
         },
       ],

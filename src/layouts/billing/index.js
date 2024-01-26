@@ -57,6 +57,8 @@ import team4 from "assets/images/team-4.jpg";
 import budge from "assets/images/budget.png";
 import dashboard from "assets/images/painel-de-controle.png";
 import DefaultLineChart from "examples/Charts/LineCharts/DefaultLineChart";
+import LineChart from "layouts/billing/components/DashboardLine";
+import Projects from "layouts/dashboard/components/Projects";
 
 function Billing() {
   const [cards, setCards] = useState([]);
@@ -102,7 +104,13 @@ function Billing() {
     axios
       .get("http://localhost:3003/api/totalCaixa", config)
       .then((response) => setCaixa(response.data))
-      .catch((error) => console.error("Erro ao buscar dados do caixa:", error));
+      .catch((error) => {
+        console.error("Erro ao buscar dados do caixa:", error);
+        if (error && error.response.status == 403) {
+          sessionStorage.setItem("redirect", false);
+          window.location.href = "/authentication/sign-in";
+        }
+      });
     // axios
     //   .get(`http://localhost:3003/api/dashboard/vendas?mes=6`, config)
     //   .then((response) => {
@@ -187,7 +195,8 @@ function Billing() {
                   ))}
                 </Grid>
                 <Grid item xs={12}>
-                  <DefaultLineChart
+                  <LineChart />
+                  {/* <DefaultLineChart
                     icon={{ color: "dark", component: "icon_name" }}
                     title="Resumo de gastos"
                     description="Mais detalhes na Aba Dashboard"
@@ -202,7 +211,7 @@ function Billing() {
                     //     },
                     //   ],
                     // }}
-                  />
+                  /> */}
                 </Grid>
               </Grid>
             </Grid>
