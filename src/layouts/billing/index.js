@@ -68,10 +68,6 @@ function Billing() {
   const [loading, setLoading] = useState(true);
   // const [metas, setMetas] = useState([]);
 
-  function oi() {
-    console.log("oi");
-  }
-
   useEffect(() => {
     const config = {
       headers: {
@@ -106,30 +102,13 @@ function Billing() {
       .then((response) => setCaixa(response.data))
       .catch((error) => {
         console.error("Erro ao buscar dados do caixa:", error);
-        if (error && error.response.status == 403) {
-          sessionStorage.setItem("redirect", false);
-          window.location.href = "/authentication/sign-in";
+        if (error) {
+          if (error.response.status == 403) {
+            sessionStorage.setItem("redirect", false);
+            window.location.href = "/authentication/sign-in";
+          }
         }
       });
-    // axios
-    //   .get(`http://localhost:3003/api/dashboard/vendas?mes=6`, config)
-    //   .then((response) => {
-    //     const resultados = response.data.dataSets || [];
-    //     const labels = resultados.map((resultado) => resultado.label);
-    //     const totalValores = resultados.map((resultado) => parseFloat(resultado.total_valor));
-
-    //     setDados({
-    //       labels: labels,
-    //       totalValores: totalValores,
-    //     });
-    //     console.log(response.data.dataSets);
-    //     setLoading(false);
-    //   })
-    //   .catch((error) => console.error("Erro ao buscar datasets:", error));
-    // axios
-    //   .get("http://localhost:3003/api/metas", config)
-    //   .then((response) => setMetas(response.data))
-    //   .catch((error) => console.error("Erro ao buscar dados das metas:", error));
   }, []);
   return (
     <DashboardLayout>
@@ -196,22 +175,6 @@ function Billing() {
                 </Grid>
                 <Grid item xs={12}>
                   <LineChart />
-                  {/* <DefaultLineChart
-                    icon={{ color: "dark", component: "icon_name" }}
-                    title="Resumo de gastos"
-                    description="Mais detalhes na Aba Dashboard"
-                    height="300px"
-                    // chart={{
-                    //   labels: dados.labels || [],
-                    //   datasets: [
-                    //     {
-                    //       label: "Geral, gastos mensais R$",
-                    //       data: dados.totalValores || [],
-                    //       color: "dark",
-                    //     },
-                    //   ],
-                    // }}
-                  /> */}
                 </Grid>
               </Grid>
             </Grid>
