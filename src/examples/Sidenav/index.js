@@ -61,6 +61,8 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
     textColor = "inherit";
   }
 
+  const logout = () => sessionStorage.setItem("token", null);
+
   const closeSidenav = () => setMiniSidenav(dispatch, true);
 
   useEffect(() => {
@@ -188,10 +190,11 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
           component="a"
           href="#"
           target="_blank"
-          rel="noreferrer"
+          rel=""
           variant="gradient"
           color={"dark"}
           fullWidth
+          onClick={logout}
         >
           Sair
         </MDButton>
