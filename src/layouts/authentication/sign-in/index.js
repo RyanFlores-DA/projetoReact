@@ -55,11 +55,9 @@ function Basic() {
 
   const handleSignIn = async () => {
     try {
-      const response = await axios.post("http://localhost:3003/api/login", null, {
-        params: {
-          login,
-          password,
-        },
+      const response = await axios.post("http://api.sof-town.tech/api/login", {
+        login,
+        password,
       });
 
       const { usuario, token } = response.data;
