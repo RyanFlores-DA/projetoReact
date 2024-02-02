@@ -91,7 +91,7 @@ function DefaultLineChart({ icon, title, description, height, chart, backgroundI
   };
   useEffect(() => {
     axios
-      .get(`http://localhost:3003/api/dashboard/vendas?mes=6`, config)
+      .get(`http://api.sof-town.tech/api/dashboard/vendas?mes=6`, config)
       .then((response) => {
         console.log("Status da resposta".response.status);
         const resultados = response.data.dataSets || [];
@@ -115,7 +115,7 @@ function DefaultLineChart({ icon, title, description, height, chart, backgroundI
 
   const handleEscolha = (opcao) => {
     axios
-      .get(`http://localhost:3003/api/dashboard/vendas?mes=${opcao}`, config)
+      .get(`http://api.sof-town.tech/api/dashboard/vendas?mes=${opcao}`, config)
       .then((response) => {
         const resultados = response.data.dataSets || [];
         const labels = resultados.map((resultado) => resultado.label);

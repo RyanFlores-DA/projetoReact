@@ -146,7 +146,7 @@ function LineChart() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const url = `http://localhost:3003/api/dashboard/vendas?mes=`;
+        const url = `http://api.sof-town.tech/api/dashboard/vendas?mes=`;
         const response = await axios.get(`${url}${selectedMonth}`, config);
         setChartData(response.data.dataSets);
       } catch (error) {
@@ -164,7 +164,7 @@ function LineChart() {
 
   const atualizaParaPeriodo = async () => {
     try {
-      const url = `http://localhost:3003/api/dashboard/vendas?mes=P&data_inicio=${initialValue.format(
+      const url = `http://api.sof-town.tech/api/dashboard/vendas?mes=P&data_inicio=${initialValue.format(
         "YYYY-MM-DD"
       )}&data_final=${finalValue.format("YYYY-MM-DD")}`;
       const response = await axios.get(`${url}`, config);

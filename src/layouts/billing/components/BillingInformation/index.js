@@ -38,7 +38,7 @@ function BillingInformation() {
     };
 
     axios
-      .get("http://localhost:3003/api/vendas", config)
+      .get("http://api.sof-town.tech/api/vendas", config)
       .then((response) => {
         setInvoices(response.data);
         setLoading(false); // Marca que os dados foram carregados com sucesso
