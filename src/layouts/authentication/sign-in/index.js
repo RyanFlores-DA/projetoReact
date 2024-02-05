@@ -55,11 +55,9 @@ function Basic() {
 
   const handleSignIn = async () => {
     try {
-      const response = await axios.post("http://localhost:3003/api/login", null, {
-        params: {
-          login,
-          password,
-        },
+      const response = await axios.post(`${process.env.URL}/api/login`, {
+        login,
+        password,
       });
 
       const { usuario, token } = response.data;
@@ -94,14 +92,14 @@ function Basic() {
           </MDTypography>
           <Grid container spacing={3} justifyContent="center" sx={{ mt: 1, mb: 2 }}>
             <Grid item xs={2}>
-              <MDTypography
+              {/* <MDTypography
                 component={MuiLink}
                 href="https://github.com/RyanFlores-DA"
                 variant="body1"
                 color="white"
               >
                 <GitHubIcon color="inherit" />
-              </MDTypography>
+              </MDTypography> */}
             </Grid>
           </Grid>
         </MDBox>

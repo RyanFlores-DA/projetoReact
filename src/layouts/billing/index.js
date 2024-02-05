@@ -90,15 +90,15 @@ function Billing() {
     } else {
     }
     axios
-      .get("http://localhost:3003/api/cards?primario=S", config)
+      .get(`${process.env.URL}/api/cards?primario=S`, config)
       .then((response) => setCards(response.data))
       .catch((error) => console.error("Erro ao buscar cartoes:", error));
     axios
-      .get("http://localhost:3003/api/despesas", config)
+      .get(`${process.env.URL}/api/despesas`, config)
       .then((response) => setDespesas(response.data))
       .catch((error) => console.error("Erro ao buscar dados das despesas:", error));
     axios
-      .get("http://localhost:3003/api/totalCaixa", config)
+      .get(`${process.env.URL}/api/totalCaixa`, config)
       .then((response) => setCaixa(response.data))
       .catch((error) => {
         console.error("Erro ao buscar dados do caixa:", error);
@@ -112,6 +112,7 @@ function Billing() {
   }, []);
   return (
     <DashboardLayout>
+      <DashboardNavbar />
       {/* <Header>
         <MDBox p={2}>
           <Grid container spacing={6}>

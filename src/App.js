@@ -171,7 +171,7 @@ export default function App() {
         {layout === "vr" && <Configurator />}
         <Routes>
           {getRoutes(routesFin)}
-          <Route path="*" element={<Navigate to="/billing" />} />
+          <Route path="*" element={<Navigate to="/resumo" />} />
           <Route
             path="*/authentication/sign-in"
             element={<Navigate to="*/authentication/sign-in" />}
@@ -199,7 +199,7 @@ export default function App() {
       {layout === "vr" && <Configurator />}
       <Routes>
         {getRoutes(routesFin)}
-        <Route path="*" element={<Navigate to="/billing" />} />
+        <Route path="*" element={<Navigate to="/resumo" />} />
         <Route
           path="*/authentication/sign-in"
           element={<Navigate to="*/authentication/sign-in" />}
