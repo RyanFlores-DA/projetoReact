@@ -54,6 +54,7 @@ function Basic() {
   const [password, setPassword] = useState("");
 
   const handleSignIn = async () => {
+    console.log(process.env.URL);
     try {
       const response = await axios.post(`${process.env.URL}/api/login`, {
         login,
