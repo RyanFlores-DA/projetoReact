@@ -76,13 +76,13 @@ const routesFin = [
   {
     type: "collapse",
     name: "Finanças",
-    key: "billing",
+    key: "resumo",
     icon: (
       <Icon fontSize="small" color="darkMode">
         receipt_long
       </Icon>
     ),
-    route: "/billing",
+    route: "/Resumo",
     component: <Billing />,
   },
   // {

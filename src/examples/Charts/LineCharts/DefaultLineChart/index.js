@@ -63,6 +63,7 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+// import env from "dotenv-config";
 
 ChartJS.register(
   CategoryScale,
@@ -91,7 +92,7 @@ function DefaultLineChart({ icon, title, description, height, chart, backgroundI
   };
   useEffect(() => {
     axios
-      .get(`http://api.sof-town.tech/api/dashboard/vendas?mes=6`, config)
+      .get(`${process.env.URL}/api/dashboard/vendas?mes=6`, config)
       .then((response) => {
         console.log("Status da resposta".response.status);
         const resultados = response.data.dataSets || [];
@@ -115,7 +116,7 @@ function DefaultLineChart({ icon, title, description, height, chart, backgroundI
 
   const handleEscolha = (opcao) => {
     axios
-      .get(`http://api.sof-town.tech/api/dashboard/vendas?mes=${opcao}`, config)
+      .get(`${process.env.URL}/api/dashboard/vendas?mes=${opcao}`, config)
       .then((response) => {
         const resultados = response.data.dataSets || [];
         const labels = resultados.map((resultado) => resultado.label);
