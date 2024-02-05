@@ -38,6 +38,7 @@ import MDButton from "components/MDButton";
 // Authentication layout components
 import BasicLayout from "layouts/authentication/components/BasicLayout";
 import axios from "axios";
+require('dotenv').config();
 
 // Images
 // import bgImage from "assets/images/bg-sign-in-basic.jpeg";
