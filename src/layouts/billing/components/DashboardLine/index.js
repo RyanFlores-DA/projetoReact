@@ -289,7 +289,7 @@ function LineChart() {
               <DemoContainer components={["DatePicker", "DatePicker"]}>
                 <DatePicker
                   label="Data Inicial"
-                  format="D/M/YYYY"
+                  format="M/D/YYYY"
                   defaultValue={dayjs(initialValue)}
                   onChange={(newValue) => {
                     setValueInitial(newValue);
@@ -297,7 +297,7 @@ function LineChart() {
                 />
                 <DatePicker
                   label="Data Final"
-                  format="D/M/YYYY"
+                  format="M/D/YYYY"
                   defaultValue={dayjs(finalValue)}
                   onChange={(newValue) => {
                     setValueFinal(newValue);
