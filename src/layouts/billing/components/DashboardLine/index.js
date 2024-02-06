@@ -164,7 +164,9 @@ function LineChart() {
 
   const atualizaParaPeriodo = async () => {
     try {
-      const url = `${process.env.REACT_APP_URL}/dashboard/vendas?mes=P&data_inicio=${initialValue.format(
+      const url = `${
+        process.env.REACT_APP_URL
+      }/dashboard/vendas?mes=P&data_inicio=${initialValue.format(
         "YYYY-MM-DD"
       )}&data_final=${finalValue.format("YYYY-MM-DD")}`;
       const response = await axios.get(`${url}`, config);

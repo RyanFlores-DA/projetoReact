@@ -60,7 +60,7 @@ function Basic() {
   };
   const handleSignIn = async () => {
     try {
-      const response = await axios.post(`${process.env.REACT_APP_URL}/api/login`, config, {
+      const response = await axios.post(`${process.env.REACT_APP_URL}/api/login`, {
         login,
         password,
       });
