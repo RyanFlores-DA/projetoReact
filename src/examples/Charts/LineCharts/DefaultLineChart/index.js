@@ -92,7 +92,7 @@ function DefaultLineChart({ icon, title, description, height, chart, backgroundI
   };
   useEffect(() => {
     axios
-      .get(`${process.env.URL}/api/dashboard/vendas?mes=6`, config)
+      .get(`${process.env.REACT_APP_URL}/api/dashboard/vendas?mes=6`, config)
       .then((response) => {
         console.log("Status da resposta".response.status);
         const resultados = response.data.dataSets || [];
@@ -116,7 +116,7 @@ function DefaultLineChart({ icon, title, description, height, chart, backgroundI
 
   const handleEscolha = (opcao) => {
     axios
-      .get(`${process.env.URL}/api/dashboard/vendas?mes=${opcao}`, config)
+      .get(`${process.env.REACT_APP_URL}/api/dashboard/vendas?mes=${opcao}`, config)
       .then((response) => {
         const resultados = response.data.dataSets || [];
         const labels = resultados.map((resultado) => resultado.label);

@@ -38,7 +38,7 @@ function BillingInformation() {
     };
 
     axios
-      .get(`${process.env.URL}/api/vendas`, config)
+      .get(`${process.env.REACT_APP_URL}/api/vendas`, config)
       .then((response) => {
         setInvoices(response.data);
         setLoading(false); // Marca que os dados foram carregados com sucesso

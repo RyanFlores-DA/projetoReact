@@ -48,7 +48,7 @@ export default function data() {
     };
 
     axios
-      .get(`${process.env.URL}/api/metas`, config)
+      .get(`${process.env.REACT_APP_URL}/api/metas`, config)
       .then((response) => setMetas(response.data))
       .catch((error) => console.error("Erro ao buscar dados das metas:", error));
   }, []);

@@ -21,7 +21,7 @@ function Invoices() {
     };
 
     axios
-      .get(`${process.env.URL}/api/assinaturas`, config)
+      .get(`${process.env.REACT_APP_URL}/api/assinaturas`, config)
       .then((response) => setAssinaturas(response.data))
       .catch((error) => console.error("Erro ao buscar dados das faturas:", error));
   }, []);

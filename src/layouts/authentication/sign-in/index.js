@@ -53,10 +53,14 @@ function Basic() {
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
 
+  const config = {
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+    },
+  };
   const handleSignIn = async () => {
-    console.log(process.env.URL);
     try {
-      const response = await axios.post(`${process.env.URL}/api/login`, {
+      const response = await axios.post(`${process.env.REACT_APP_URL}/api/login`, config, {
         login,
         password,
       });
