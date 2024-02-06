@@ -59,7 +59,6 @@ function Basic() {
     },
   };
   const handleSignIn = async () => {
-    console.log(process.env.REACT_APP_URL);
     try {
       const response = await axios.post(`${process.env.REACT_APP_URL}/api/login`, config, {
         login,
