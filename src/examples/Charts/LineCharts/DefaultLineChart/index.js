@@ -214,7 +214,6 @@ function DefaultLineChart({ icon, title, description, height, chart, backgroundI
     >
       <MenuItem onClick={() => handleEscolha(3)}>3 Meses</MenuItem>
       <MenuItem onClick={() => handleEscolha(6)}>6 Meses</MenuItem>
-      <MenuItem onClick={() => handleEscolha(3)}>Ano atual</MenuItem>
       <MenuItem onClick={toggleCustomizing}>Personalizar</MenuItem>
     </Menu>
   );

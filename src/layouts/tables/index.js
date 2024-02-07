@@ -48,12 +48,12 @@ function Tables() {
                 py={3}
                 px={2}
                 variant="gradient"
-                bgColor="info"
+                bgColor="dark"
                 borderRadius="lg"
-                coloredShadow="info"
+                coloredShadow="dark"
               >
                 <MDTypography variant="h6" color="white">
-                  Authors Table
+                  Meus Gastos - Fevereiro - R$ 500.00
                 </MDTypography>
               </MDBox>
               <MDBox pt={3}>
@@ -75,12 +75,12 @@ function Tables() {
                 py={3}
                 px={2}
                 variant="gradient"
-                bgColor="info"
+                bgColor="dark"
                 borderRadius="lg"
-                coloredShadow="info"
+                coloredShadow="dark"
               >
                 <MDTypography variant="h6" color="white">
-                  Projects Table
+                  Metas e Objetivos
                 </MDTypography>
               </MDBox>
               <MDBox pt={3}>

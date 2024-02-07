@@ -25,11 +25,64 @@ import MDBadge from "components/MDBadge";
 import team2 from "assets/images/team-2.jpg";
 import team3 from "assets/images/team-3.jpg";
 import team4 from "assets/images/team-4.jpg";
+import axios from "axios";
+import React, { useState, useEffect } from "react";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Icon from "@mui/material/Icon";
 
 export default function data() {
+  const [vendas, setVendas] = useState([]);
+  const [loading, setLoading] = useState(true); // Adiciona um estado de carregamento
+  const [menu, setMenu] = useState(null);
+  const openMenu = ({ currentTarget }) => setMenu(currentTarget);
+  const closeMenu = () => {
+    setMenu(null);
+  };
+  useEffect(() => {
+    const config = {
+      headers: {
+        authorization: sessionStorage.getItem("token"),
+      },
+    };
+
+    axios
+      .get(`${process.env.REACT_APP_URL}/api/vendas`, config)
+      .then((response) => {
+        setVendas(response.data);
+        setLoading(false); // Marca que os dados foram carregados com sucesso
+      })
+      .catch((error) => console.error("Erro ao buscar dados dos gastos:", error));
+  }, []);
+
+  const renderMenu = (
+    <Menu
+      id="simple-menu"
+      anchorEl={menu}
+      anchorOrigin={{
+        vertical: "top",
+        horizontal: "left",
+      }}
+      transformOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+      open={Boolean(menu)}
+      onClose={closeMenu}
+    >
+      <MenuItem onClick={closeMenu}>Pago</MenuItem>
+      <MenuItem onClick={closeMenu}>Cancelar</MenuItem>
+      <MenuItem onClick={closeMenu}>Antecipar</MenuItem>
+    </Menu>
+  );
+
+  function oi(qual) {
+    console.log(qual);
+  }
+
   const Author = ({ image, name, email }) => (
     <MDBox display="flex" alignItems="center" lineHeight={1}>
-      <MDAvatar src={image} name={name} size="sm" />
+      {/* <MDAvatar src={image} name={name} size="sm" /> */}
       <MDBox ml={2} lineHeight={1}>
         <MDTypography display="block" variant="button" fontWeight="medium">
           {name}
@@ -47,131 +100,59 @@ export default function data() {
       <MDTypography variant="caption">{description}</MDTypography>
     </MDBox>
   );
-
+  const rows = vendas.map((key) => ({
+    author: <Author image={team4} name={key.descricao} email={key.tipo} />,
+    function: <Job title={key.banco} description={"R$ " + key.valor} />,
+    status: (
+      <MDBox ml={-1}>
+        <MDBadge badgeContent={key.status} color={key.cor} variant="gradient" size="sm" />
+      </MDBox>
+    ),
+    employed: (
+      <MDTypography variant="caption" color="text" fontWeight="medium">
+        {key.data}
+      </MDTypography>
+    ),
+    action: (
+      <MDTypography variant="caption" color="text" fontWeight="medium">
+        <MDBox color="text" px={2}>
+          <Icon sx={{ cursor: "pointer", fontWeight: "bold" }} fontSize="small" onClick={openMenu}>
+            more_vert
+          </Icon>
+        </MDBox>
+        <Menu
+          id="simple-menu"
+          anchorEl={menu}
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "left",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+          open={Boolean(menu)}
+          onClose={closeMenu}
+        >
+          <MenuItem component="a" onClick={() => oi(key.descricao)}>
+            Pago
+          </MenuItem>
+          <MenuItem onClick={closeMenu}>Cancelar</MenuItem>
+          <MenuItem onClick={closeMenu}>Antecipar</MenuItem>
+        </Menu>
+      </MDTypography>
+    ),
+  }));
   return {
     columns: [
-      { Header: "author", accessor: "author", width: "45%", align: "left" },
-      { Header: "function", accessor: "function", align: "left" },
+      { Header: "descricao", accessor: "author", width: "45%", align: "left" },
+      { Header: "banco", accessor: "function", align: "left" },
       { Header: "status", accessor: "status", align: "center" },
-      { Header: "employed", accessor: "employed", align: "center" },
-      { Header: "action", accessor: "action", align: "center" },
+      { Header: "data da venda", accessor: "employed", align: "center" },
+      { Header: "editar", accessor: "action", align: "center" },
     ],
 
-    rows: [
-      {
-        author: <Author image={team2} name="John Michael" email="john@creative-tim.com" />,
-        function: <Job title="Manager" description="Organization" />,
-        status: (
-          <MDBox ml={-1}>
-            <MDBadge badgeContent="online" color="success" variant="gradient" size="sm" />
-          </MDBox>
-        ),
-        employed: (
-          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-            23/04/18
-          </MDTypography>
-        ),
-        action: (
-          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-            Edit
-          </MDTypography>
-        ),
-      },
-      {
-        author: <Author image={team3} name="Alexa Liras" email="alexa@creative-tim.com" />,
-        function: <Job title="Programator" description="Developer" />,
-        status: (
-          <MDBox ml={-1}>
-            <MDBadge badgeContent="offline" color="dark" variant="gradient" size="sm" />
-          </MDBox>
-        ),
-        employed: (
-          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-            11/01/19
-          </MDTypography>
-        ),
-        action: (
-          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-            Edit
-          </MDTypography>
-        ),
-      },
-      {
-        author: <Author image={team4} name="Laurent Perrier" email="laurent@creative-tim.com" />,
-        function: <Job title="Executive" description="Projects" />,
-        status: (
-          <MDBox ml={-1}>
-            <MDBadge badgeContent="online" color="success" variant="gradient" size="sm" />
-          </MDBox>
-        ),
-        employed: (
-          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-            19/09/17
-          </MDTypography>
-        ),
-        action: (
-          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-            Edit
-          </MDTypography>
-        ),
-      },
-      {
-        author: <Author image={team3} name="Michael Levi" email="michael@creative-tim.com" />,
-        function: <Job title="Programator" description="Developer" />,
-        status: (
-          <MDBox ml={-1}>
-            <MDBadge badgeContent="online" color="success" variant="gradient" size="sm" />
-          </MDBox>
-        ),
-        employed: (
-          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-            24/12/08
-          </MDTypography>
-        ),
-        action: (
-          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-            Edit
-          </MDTypography>
-        ),
-      },
-      {
-        author: <Author image={team3} name="Richard Gran" email="richard@creative-tim.com" />,
-        function: <Job title="Manager" description="Executive" />,
-        status: (
-          <MDBox ml={-1}>
-            <MDBadge badgeContent="offline" color="dark" variant="gradient" size="sm" />
-          </MDBox>
-        ),
-        employed: (
-          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-            04/10/21
-          </MDTypography>
-        ),
-        action: (
-          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-            Edit
-          </MDTypography>
-        ),
-      },
-      {
-        author: <Author image={team4} name="Miriam Eric" email="miriam@creative-tim.com" />,
-        function: <Job title="Programator" description="Developer" />,
-        status: (
-          <MDBox ml={-1}>
-            <MDBadge badgeContent="offline" color="dark" variant="gradient" size="sm" />
-          </MDBox>
-        ),
-        employed: (
-          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-            14/09/20
-          </MDTypography>
-        ),
-        action: (
-          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-            Edit
-          </MDTypography>
-        ),
-      },
-    ],
+    rows: rows,
   };
 }
+// component="a" href="#"

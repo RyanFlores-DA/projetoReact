@@ -50,7 +50,8 @@ import Icon from "@mui/material/Icon";
 
 const routesFin = [
   {
-    type: "hidden",
+    // type: "hidden",
+    type: "collapse",
     name: "",
     key: "dashboard",
     icon: "",
@@ -68,9 +69,9 @@ const routesFin = [
   {
     type: "collapse",
     name: "Tabelas",
-    key: "tables",
+    key: "tabelas",
     icon: <Icon fontSize="small">table_view</Icon>,
-    route: "/tables",
+    route: "/tabelas",
     component: <Tables />,
   },
   {
