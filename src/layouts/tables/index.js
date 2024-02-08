@@ -27,6 +27,11 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 import DataTable from "examples/Tables/DataTable";
 
+// Material Dashboard 2 React example components
+import ReportsBarChart from "examples/Charts/BarCharts/ReportsBarChart";
+import ReportsLineChart from "examples/Charts/LineCharts/ReportsLineChart";
+import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatisticsCard";
+
 // Data
 import authorsTableData from "layouts/tables/data/authorsTableData";
 import projectsTableData from "layouts/tables/data/projectsTableData";
@@ -40,6 +45,65 @@ function Tables() {
       <DashboardNavbar />
       <MDBox pt={6} pb={3}>
         <Grid container spacing={6}>
+          <Grid item xs={12} md={6} lg={3}>
+            <MDBox mb={1.5}>
+              <ComplexStatisticsCard
+                color="dark"
+                icon="weekend"
+                title="Compras"
+                count={281}
+                percentage={{
+                  color: "success",
+                  amount: "+55%",
+                  label: "than lask week",
+                }}
+              />
+            </MDBox>
+          </Grid>
+          <Grid item xs={12} md={6} lg={3}>
+            <MDBox mb={1.5}>
+              <ComplexStatisticsCard
+                icon="leaderboard"
+                title="Contas"
+                count="2,300"
+                percentage={{
+                  color: "success",
+                  amount: "+3%",
+                  label: "than last month",
+                }}
+              />
+            </MDBox>
+          </Grid>
+          <Grid item xs={12} md={6} lg={3}>
+            <MDBox mb={1.5}>
+              <ComplexStatisticsCard
+                color="success"
+                icon="store"
+                title="Assinaturas"
+                count="34k"
+                percentage={{
+                  color: "success",
+                  amount: "+1%",
+                  label: "than yesterday",
+                }}
+              />
+            </MDBox>
+          </Grid>
+          <Grid item xs={12} md={6} lg={3}>
+            <MDBox mb={1.5}>
+              <ComplexStatisticsCard
+                color="primary"
+                icon="person_add"
+                title="Metas"
+                count="+91"
+                percentage={{
+                  color: "success",
+                  amount: "",
+                  label: "Just updated",
+                }}
+              />
+            </MDBox>
+          </Grid>
           <Grid item xs={12}>
             <Card>
               <MDBox
@@ -53,7 +117,7 @@ function Tables() {
                 coloredShadow="dark"
               >
                 <MDTypography variant="h6" color="white">
-                  Meus Gastos - Fevereiro - R$ 500.00
+                  Compras
                 </MDTypography>
               </MDBox>
               <MDBox pt={3}>

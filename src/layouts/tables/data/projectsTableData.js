@@ -39,6 +39,10 @@ import token from "../../authentication/access/auth";
 
 export default function data() {
   const [metas, setMetas] = useState([]);
+  let conversorMoeda = new Intl.NumberFormat("pt-br", {
+    style: "currency",
+    currency: "BRL",
+  });
 
   useEffect(() => {
     const config = {
@@ -77,15 +81,15 @@ export default function data() {
     project: <Project name={key.titulo} />,
     budget: (
       <MDTypography component="a" href="#" variant="button" color="text" fontWeight="medium">
-        R$ {key.valor}
+        {conversorMoeda.format(key.valor)}
       </MDTypography>
     ),
     status: (
       <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-        R$ {key.meta}
+        {conversorMoeda.format(key.meta)}
       </MDTypography>
     ),
-    completion: <Progress color="info" value={key.percentual} />,
+    completion: <Progress color="dark" value={key.percentual} />,
     action: (
       <MDTypography component="a" href="#" color="text">
         <Icon>more_vert</Icon>

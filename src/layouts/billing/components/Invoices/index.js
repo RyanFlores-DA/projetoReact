@@ -32,7 +32,7 @@ function Invoices() {
         <MDTypography variant="h6" fontWeight="medium">
           Assinaturas
         </MDTypography>
-        <MDButton variant="outlined" color="info" size="small">
+        <MDButton variant="outlined" color="info" size="small" component="a" href="/tabelas">
           Ver Todas
         </MDButton>
       </MDBox>
