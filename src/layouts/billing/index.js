@@ -103,7 +103,7 @@ function Billing() {
       .catch((error) => {
         console.error("Erro ao buscar dados do caixa:", error);
         if (error) {
-          if (error.response.status == 403) {
+          if (error.response.status) {
             sessionStorage.setItem("redirect", false);
             window.location.href = "/authentication/sign-in";
           }

@@ -60,6 +60,7 @@ function Basic() {
   };
   const handleSignIn = async () => {
     try {
+      console.log(process.env.REACT_APP_URL);
       const response = await axios.post(`${process.env.REACT_APP_URL}/api/login`, {
         login,
         password,
@@ -72,7 +73,7 @@ function Basic() {
       sessionStorage.setItem("user", response.data.user);
       sessionStorage.setItem("token", response.data.token);
       // Redirecione o usuário para outra página após o login, se necessário.
-      window.location.href = "/billing";
+      window.location.href = "/resumo";
     } catch (error) {
       console.error("Erro ao fazer login:", error);
     }

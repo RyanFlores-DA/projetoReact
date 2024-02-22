@@ -35,10 +35,35 @@ import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatist
 // Data
 import authorsTableData from "layouts/tables/data/authorsTableData";
 import projectsTableData from "layouts/tables/data/projectsTableData";
+import assinaturasTableData from "layouts/tables/data/assinaturasTableData";
+
+import axios from "axios";
+import React, { useState, useEffect } from "react";
 
 function Tables() {
   const { columns, rows } = authorsTableData();
+  const { columns: assinaturasColunas, rows: assinaturasLinhas } = assinaturasTableData();
+  const [resumo, setResumo] = useState([]);
+  const [loading, setLoading] = useState(true);
   const { columns: pColumns, rows: pRows } = projectsTableData();
+  let conversorMoeda = new Intl.NumberFormat("pt-br", {
+    style: "currency",
+    currency: "BRL",
+  });
+  const config = {
+    headers: {
+      authorization: sessionStorage.getItem("token"),
+    },
+  };
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_URL}/api/resumo/cartoes`, config)
+      .then((response) => {
+        setResumo(response.data);
+        setLoading(false);
+      })
+      .catch((error) => console.error("Erro ao buscar dados dos resumos:", error));
+  }, []);
 
   return (
     <DashboardLayout>
@@ -47,61 +72,67 @@ function Tables() {
         <Grid container spacing={6}>
           <Grid item xs={12} md={6} lg={3}>
             <MDBox mb={1.5}>
-              <ComplexStatisticsCard
-                color="dark"
-                icon="weekend"
-                title="Compras"
-                count={281}
-                percentage={{
-                  color: "success",
-                  amount: "+55%",
-                  label: "than lask week",
-                }}
-              />
+              {!loading &&
+                resumo.map((resumo) => (
+                  <ComplexStatisticsCard
+                    key={resumo.valoratualfinancas}
+                    color="dark"
+                    icon="weekend"
+                    title="Compras"
+                    count={resumo.valoratualfinancas}
+                    percentage={{
+                      color: "success",
+                      amount: `${resumo.porcentagemdiferencafinancas}%`,
+                      label: `que o mês passado | R$ ${resumo.diferencafinancas}`,
+                    }}
+                  />
+                ))}
             </MDBox>
           </Grid>
           <Grid item xs={12} md={6} lg={3}>
             <MDBox mb={1.5}>
-              <ComplexStatisticsCard
-                icon="leaderboard"
-                title="Contas"
-                count="2,300"
-                percentage={{
-                  color: "success",
-                  amount: "+3%",
-                  label: "than last month",
-                }}
-              />
+              {!loading &&
+                resumo.map((resumo) => (
+                  <ComplexStatisticsCard
+                    key={resumo.porcentagemdiferencacaixa}
+                    icon="leaderboard"
+                    title="Caixa"
+                    count={resumo.valoratualcaixa}
+                    percentage={{
+                      color: "error",
+                      amount: `${resumo.porcentagemdiferencacaixa}%`,
+                      label: "que o mês passado",
+                    }}
+                  />
+                ))}
             </MDBox>
           </Grid>
           <Grid item xs={12} md={6} lg={3}>
             <MDBox mb={1.5}>
-              <ComplexStatisticsCard
-                color="success"
-                icon="store"
-                title="Assinaturas"
-                count="34k"
-                percentage={{
-                  color: "success",
-                  amount: "+1%",
-                  label: "than yesterday",
-                }}
-              />
+              {!loading &&
+                resumo.map((resumo) => (
+                  <ComplexStatisticsCard
+                    key={resumo.valoratualassinaturas}
+                    color="success"
+                    icon="store"
+                    title="Assinaturas"
+                    count={resumo.valoratualassinaturas}
+                  />
+                ))}
             </MDBox>
           </Grid>
           <Grid item xs={12} md={6} lg={3}>
             <MDBox mb={1.5}>
-              <ComplexStatisticsCard
-                color="primary"
-                icon="person_add"
-                title="Metas"
-                count="+91"
-                percentage={{
-                  color: "success",
-                  amount: "",
-                  label: "Just updated",
-                }}
-              />
+              {!loading &&
+                resumo.map((resumo) => (
+                  <ComplexStatisticsCard
+                    key={resumo.valoratualdespesas}
+                    color="primary"
+                    icon="person_add"
+                    title="Contas"
+                    count={resumo.valoratualdespesas}
+                  />
+                ))}
             </MDBox>
           </Grid>
           <Grid item xs={12}>
@@ -150,6 +181,33 @@ function Tables() {
               <MDBox pt={3}>
                 <DataTable
                   table={{ columns: pColumns, rows: pRows }}
+                  isSorted={false}
+                  entriesPerPage={false}
+                  showTotalEntries={false}
+                  noEndBorder
+                />
+              </MDBox>
+            </Card>
+          </Grid>
+          <Grid item xs={12}>
+            <Card>
+              <MDBox
+                mx={2}
+                mt={-3}
+                py={3}
+                px={2}
+                variant="gradient"
+                bgColor="dark"
+                borderRadius="lg"
+                coloredShadow="dark"
+              >
+                <MDTypography variant="h6" color="white">
+                  Assinaturas
+                </MDTypography>
+              </MDBox>
+              <MDBox pt={3}>
+                <DataTable
+                  table={{ columns: assinaturasColunas, rows: assinaturasLinhas }}
                   isSorted={false}
                   entriesPerPage={false}
                   showTotalEntries={false}
