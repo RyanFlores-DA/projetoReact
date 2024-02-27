@@ -40,6 +40,8 @@ import assinaturasTableData from "layouts/tables/data/assinaturasTableData";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 
+import CadVendas from "./cadastros/cadVendas";
+
 function Tables() {
   const { columns, rows } = authorsTableData();
   const { columns: assinaturasColunas, rows: assinaturasLinhas } = assinaturasTableData();
@@ -147,9 +149,16 @@ function Tables() {
                 borderRadius="lg"
                 coloredShadow="dark"
               >
-                <MDTypography variant="h6" color="white">
-                  Compras
-                </MDTypography>
+                <Grid container alignItems="center" spacing={2}>
+                  <Grid item>
+                    <MDTypography variant="h6" color="white">
+                      Compras
+                    </MDTypography>
+                  </Grid>
+                  <Grid item>
+                    <CadVendas></CadVendas>
+                  </Grid>
+                </Grid>
               </MDBox>
               <MDBox pt={3}>
                 <DataTable
@@ -162,7 +171,7 @@ function Tables() {
               </MDBox>
             </Card>
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={12} lg={6}>
             <Card>
               <MDBox
                 mx={2}
@@ -174,9 +183,16 @@ function Tables() {
                 borderRadius="lg"
                 coloredShadow="dark"
               >
-                <MDTypography variant="h6" color="white">
-                  Metas e Objetivos
-                </MDTypography>
+                <Grid container alignItems="center" spacing={2}>
+                  <Grid item>
+                    <MDTypography variant="h6" color="white">
+                      Metas
+                    </MDTypography>
+                  </Grid>
+                  <Grid item>
+                    <CadVendas></CadVendas>
+                  </Grid>
+                </Grid>
               </MDBox>
               <MDBox pt={3}>
                 <DataTable
@@ -189,7 +205,7 @@ function Tables() {
               </MDBox>
             </Card>
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={12} lg={6}>
             <Card>
               <MDBox
                 mx={2}
@@ -201,9 +217,16 @@ function Tables() {
                 borderRadius="lg"
                 coloredShadow="dark"
               >
-                <MDTypography variant="h6" color="white">
-                  Assinaturas
-                </MDTypography>
+                <Grid container alignItems="center" spacing={2}>
+                  <Grid item>
+                    <MDTypography variant="h6" color="white">
+                      Assinaturas
+                    </MDTypography>
+                  </Grid>
+                  <Grid item>
+                    <CadVendas></CadVendas>
+                  </Grid>
+                </Grid>
               </MDBox>
               <MDBox pt={3}>
                 <DataTable

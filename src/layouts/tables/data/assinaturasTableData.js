@@ -150,7 +150,12 @@ export default function data() {
     assinaturas && assinaturas.length > 0
       ? assinaturas.map((key, index) => ({
           author: <Author image={team4} name={key.descricao} />,
-          function: <Job title={key.banco} description={conversorMoeda.format(key.valor)} />,
+          function: <Job title={key.banco} />,
+          budget: (
+            <MDTypography component="a" href="#" variant="button" color="text" fontWeight="medium">
+              {conversorMoeda.format(key.valor)}
+            </MDTypography>
+          ),
           employed: (
             <MDTypography variant="caption" color="text" fontWeight="medium">
               {key.data}
