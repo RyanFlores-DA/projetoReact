@@ -8,6 +8,7 @@ import Grid from "@mui/material/Grid";
 import MDBox from "components/MDBox";
 import Container from "@mui/material/Container";
 import DeleteIcon from "@mui/icons-material/Delete";
+import AddIcon from "@mui/icons-material/Add";
 import SendIcon from "@mui/icons-material/Send";
 import Stack from "@mui/material/Stack";
 import MDTypography from "components/MDTypography";
@@ -31,7 +32,7 @@ export default function BasicModal() {
 
   return (
     <div>
-      <Button variant="outlined" startIcon={<DeleteIcon />}>
+      <Button onClick={handleOpen} variant="outlined" startIcon={<AddIcon />}>
         Inserir
       </Button>
       <Modal
