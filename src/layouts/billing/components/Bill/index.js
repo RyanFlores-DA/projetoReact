@@ -27,7 +27,7 @@ import MDButton from "components/MDButton";
 // Material Dashboard 2 React context
 import { useMaterialUIController } from "context";
 
-function Bill({ name, company, email, vat, noGutter }) {
+function Bill({ name, company, email, vat, parc, noGutter }) {
   const [controller] = useMaterialUIController();
   const { darkMode } = controller;
 
@@ -66,24 +66,26 @@ function Bill({ name, company, email, vat, noGutter }) {
             </MDButton>
           </MDBox>
         </MDBox>
-        <MDBox mb={1} lineHeight={0}>
-          <MDTypography variant="caption" color="text">
-            Banco:&nbsp;&nbsp;&nbsp;
-            <MDTypography variant="caption" fontWeight="medium" textTransform="capitalize">
-              {company}
-            </MDTypography>
+        <MDTypography variant="caption" color="text">
+          Banco:&nbsp;&nbsp;&nbsp;
+          <MDTypography variant="caption" fontWeight="medium" textTransform="capitalize">
+            {company}
           </MDTypography>
-        </MDBox>
-        <MDBox mb={1} lineHeight={0}>
-          <MDTypography variant="caption" color="text">
-            Data:&nbsp;&nbsp;&nbsp;
-            <MDTypography variant="caption" fontWeight="medium">
-              {email}
-            </MDTypography>
+        </MDTypography>
+        <MDTypography variant="caption" color="text">
+          Data Venda:&nbsp;&nbsp;&nbsp;
+          <MDTypography variant="caption" fontWeight="medium">
+            {email}
           </MDTypography>
-        </MDBox>
+        </MDTypography>
         <MDTypography variant="caption" color="text">
           Valor:&nbsp;&nbsp;&nbsp;
+          <MDTypography variant="caption" fontWeight="medium">
+            {vat}
+          </MDTypography>
+        </MDTypography>
+        <MDTypography variant="caption" color="text">
+          Parcela:&nbsp;&nbsp;&nbsp;
           <MDTypography variant="caption" fontWeight="medium">
             {vat}
           </MDTypography>
@@ -104,6 +106,7 @@ Bill.propTypes = {
   company: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
   vat: PropTypes.string.isRequired,
+  parc: PropTypes.string.isRequired,
   noGutter: PropTypes.bool,
 };
 

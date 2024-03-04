@@ -92,6 +92,7 @@ function BillingInformation() {
               company={invoice.banco}
               email={invoice.data}
               vat={invoice.valor}
+              parc={invoice.valor}
             />
           ))}
         </MDBox>
