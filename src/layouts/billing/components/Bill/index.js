@@ -27,7 +27,7 @@ import MDButton from "components/MDButton";
 // Material Dashboard 2 React context
 import { useMaterialUIController } from "context";
 
-function Bill({ name, company, email, vat, parc, noGutter }) {
+function Bill({ name, company, email, vat, parc, maxParc, noGutter }) {
   const [controller] = useMaterialUIController();
   const { darkMode } = controller;
 
@@ -87,7 +87,7 @@ function Bill({ name, company, email, vat, parc, noGutter }) {
         <MDTypography variant="caption" color="text">
           Parcela:&nbsp;&nbsp;&nbsp;
           <MDTypography variant="caption" fontWeight="medium">
-            {vat}
+            {parc} de {maxParc}
           </MDTypography>
         </MDTypography>
       </MDBox>
@@ -107,6 +107,7 @@ Bill.propTypes = {
   email: PropTypes.string.isRequired,
   vat: PropTypes.string.isRequired,
   parc: PropTypes.string.isRequired,
+  maxParc: PropTypes.string.isRequired,
   noGutter: PropTypes.bool,
 };
 
