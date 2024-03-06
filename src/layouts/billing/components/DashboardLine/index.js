@@ -149,7 +149,9 @@ function LineChart() {
         const url = `${process.env.REACT_APP_URL}/api/dashboard/vendas?mes=`;
         const response = await axios.get(`${url}${selectedMonth}`, config);
         setChartData(response.data.dataSets);
+        console.log(customizing);
       } catch (error) {
+        console.log(error);
         if (error) {
           if (error.response.status == 403) {
             sessionStorage.setItem("redirect", false);
@@ -191,10 +193,31 @@ function LineChart() {
     setMenu(null);
   };
 
-  const dataa = {
-    labels: chartData ? chartData.map((item) => item.label) : [],
-    datasets: chartData
-      ? [
+  // const dataa = {
+  //   labels: chartData ? chartData.map((item) => item.label) : [],
+  //   datasets: chartData
+  //     ? [
+  //         {
+  //           label: "Geral, gastos mensais R$",
+  //           data: chartData.map((item) => item.total_valor),
+  //           tension: 0,
+  //           pointRadius: 3,
+  //           borderWidth: 2,
+  //           backgroundColor: "transparent",
+  //           fill: true,
+  //           pointBackgroundColor: "dark",
+  //           borderColor: "dark",
+  //           maxBarThickness: 6,
+  //         },
+  //       ]
+  //     : [],
+  // };
+
+  const dataa = useMemo(() => {
+    if (chartData && chartData.length > 0) {
+      return {
+        labels: chartData.map((item) => item.label),
+        datasets: [
           {
             label: "Geral, gastos mensais R$",
             data: chartData.map((item) => item.total_valor),
@@ -207,9 +230,12 @@ function LineChart() {
             borderColor: "dark",
             maxBarThickness: 6,
           },
-        ]
-      : [],
-  };
+        ],
+      };
+    } else {
+      return null;
+    }
+  }, [chartData]);
 
   // const dataa = {
   //   labels: ["Janeiro", "Fevereiro", "Março"],
