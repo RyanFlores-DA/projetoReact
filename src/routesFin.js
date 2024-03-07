@@ -49,15 +49,15 @@ import Login from "layouts/login";
 import Icon from "@mui/material/Icon";
 
 const routesFin = [
-  {
-    // type: "hidden",
-    type: "collapse",
-    name: "Dashboard",
-    key: "dashboard",
-    icon: "",
-    route: "/dashboard",
-    component: <Dashboard />,
-  },
+  // {
+  //   // type: "hidden",
+  //   type: "collapse",
+  //   name: "Dashboard",
+  //   key: "dashboard",
+  //   icon: "",
+  //   route: "/dashboard",
+  //   component: <Dashboard />,
+  // },
   // {
   //   type: "collapse",
   //   name: "Login",
@@ -90,14 +90,14 @@ const routesFin = [
   //   route: "/rtl",
   //   component: <RTL />,
   // },
-  {
-    type: "collapse",
-    name: "Notifications",
-    key: "notifications",
-    icon: <Icon fontSize="small">notifications</Icon>,
-    route: "/notifications",
-    component: <Notifications />,
-  },
+  // {
+  //   type: "collapse",
+  //   name: "Notifications",
+  //   key: "notifications",
+  //   icon: <Icon fontSize="small">notifications</Icon>,
+  //   route: "/notifications",
+  //   component: <Notifications />,
+  // },
   // {
   //   type: "collapse",
   //   name: "Profile",
