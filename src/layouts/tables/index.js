@@ -100,11 +100,11 @@ function Tables() {
                     icon="leaderboard"
                     title="Caixa"
                     count={resumo.valoratualcaixa}
-                    percentage={{
-                      color: "error",
-                      amount: `${resumo.porcentagemdiferencacaixa}%`,
-                      label: "que o mês passado",
-                    }}
+                    // percentage={{
+                    //   color: "error",
+                    //   amount: `${resumo.porcentagemdiferencacaixa}%`,
+                    //   label: "que o mês passado",
+                    // }}
                   />
                 ))}
             </MDBox>

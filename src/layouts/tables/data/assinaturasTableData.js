@@ -50,14 +50,11 @@ export default function data() {
       authorization: sessionStorage.getItem("token"),
     },
   };
-  console.log(`${process.env.REACT_APP_URL}/api/assinaturas`);
   useEffect(() => {
-    console.log("entrou");
     axios
       .get(`${process.env.REACT_APP_URL}/api/assinaturas`, config)
       .then((response) => {
         setAssinaturas(response.data);
-        console.log(`${response} resposta`);
         setLoading(false); // Marca que os dados foram carregados com sucesso
       })
       .catch((error) => console.error("Erro ao buscar dados das assinaturas:", error));
@@ -83,7 +80,6 @@ export default function data() {
       default:
         break;
     }
-    console.log(option, id);
     try {
       axios
         .put(
