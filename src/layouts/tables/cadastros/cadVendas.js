@@ -41,7 +41,7 @@ export default function BasicModal() {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <MediaCard></MediaCard>
+        <MediaCard handleClose={handleClose}></MediaCard>
       </Modal>
     </div>
   );
