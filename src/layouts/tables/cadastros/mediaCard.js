@@ -47,6 +47,7 @@ export default function MediaCard({ handleClose }) {
   const [loadingCardVendas, setLoadingCardVendas] = useState(false);
   const [loadingCartoes, setLoadingCartoes] = useState(true);
   const [values, setValues] = React.useState("");
+  const [mensagemVenda, setMensagemVenda] = React.useState("");
   const [cardAberto, setCardAberto] = useState(true);
 
   const [botaoHabilitado, setBotaoHabilitado] = useState(false);
@@ -66,7 +67,7 @@ export default function MediaCard({ handleClose }) {
       })
       .catch((error) => console.error("Erro ao buscar dados meus bancos:", error));
     axios
-      .get(`${process.env.REACT_APP_URL}/api/cards?primario=N`, config)
+      .get(`${process.env.REACT_APP_URL}/api/cards`, config)
       .then((response) => {
         setMeusCartoes(response.data);
         setLoadingCartoes(false);
@@ -161,6 +162,7 @@ export default function MediaCard({ handleClose }) {
       .post(`${process.env.REACT_APP_URL}/api/inserir/vendas`, requisicaoBody, config)
       .then((response) => {
         if (response.data.status == "ok") {
+          setMensagemVenda(response.data.mensagem);
           setLoadingProgress(true);
           setLoadingCardVendas(false);
         } else {
@@ -175,9 +177,20 @@ export default function MediaCard({ handleClose }) {
       <CardMedia component="img" height="140" image={Compras} alt="Compras" />
       {!loadingCardVendas && (
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
-            O que eu comprei?
-          </Typography>
+          <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <Typography gutterBottom variant="h5" component="div">
+              O que eu comprei?
+            </Typography>
+          </Box>
+          {loadingProgress && (
+            <Box
+              sx={{ margin: 2, display: "flex", justifyContent: "center", alignItems: "center" }}
+            >
+              <Typography gutterBottom variant="h5" component="div">
+                {mensagemVenda}
+              </Typography>
+            </Box>
+          )}
           <TextField
             fullWidth
             id="outlined-basic"
@@ -271,7 +284,7 @@ export default function MediaCard({ handleClose }) {
               </Select>
             </FormControl>
           )}
-          {!loadingCartoes && (
+          {!loadingCartoes && customizing && (
             <FormControl fullWidth sx={{ marginBottom: 2 }}>
               <InputLabel id="demo-simple-select-label">Cartao</InputLabel>
               <Select

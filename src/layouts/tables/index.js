@@ -84,8 +84,8 @@ function Tables() {
                     count={resumo.valoratualfinancas}
                     percentage={{
                       color: "success",
-                      amount: `${resumo.porcentagemdiferencafinancas}%`,
-                      label: `que o mês passado | R$ ${resumo.diferencafinancas}`,
+                      amount: ``,
+                      label: `Valor mês passado R$ ${resumo.diferencafinancas}`,
                     }}
                   />
                 ))}
@@ -189,9 +189,9 @@ function Tables() {
                       Metas
                     </MDTypography>
                   </Grid>
-                  <Grid item>
+                  {/* <Grid item>
                     <CadVendas></CadVendas>
-                  </Grid>
+                  </Grid> */}
                 </Grid>
               </MDBox>
               <MDBox pt={3}>
@@ -223,9 +223,9 @@ function Tables() {
                       Assinaturas
                     </MDTypography>
                   </Grid>
-                  <Grid item>
+                  {/* <Grid item>
                     <CadVendas></CadVendas>
-                  </Grid>
+                  </Grid> */}
                 </Grid>
               </MDBox>
               <MDBox pt={3}>

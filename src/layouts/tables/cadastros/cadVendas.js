@@ -12,6 +12,14 @@ import AddIcon from "@mui/icons-material/Add";
 import SendIcon from "@mui/icons-material/Send";
 import Stack from "@mui/material/Stack";
 import MDTypography from "components/MDTypography";
+import InputAdornment from "@mui/material/InputAdornment";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import MDButton from "components/MDButton";
+import dayjs from "dayjs";
 
 const style = {
   position: "absolute",
@@ -29,6 +37,13 @@ export default function BasicModal() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  // const dataAtual = new Date();
+  // const dia = String(dataAtual.getDate()).padStart(2, "0");
+  // const mes = String(dataAtual.getMonth() + 1).padStart(2, "0");
+  // const ano = dataAtual.getFullYear();
+  // const dataFormatada = `${dia}/${mes}/${ano}`;
+  // const [initialValue, setValueInitial] = React.useState(dayjs(dataFormatada));
+  // const [finalValue, setValueFinal] = React.useState(dayjs(dataFormatada));
 
   return (
     <div>
@@ -43,6 +58,34 @@ export default function BasicModal() {
       >
         <MediaCard handleClose={handleClose}></MediaCard>
       </Modal>
+      {/* <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt">
+        <DemoContainer components={["DatePicker", "DatePicker"]}>
+          <DatePicker
+            label="Data Inicial"
+            format="M/D/YYYY"
+            defaultValue={dayjs(initialValue)}
+            onChange={(newValue) => {
+              setValueInitial(newValue);
+            }}
+          />
+          <DatePicker
+            label="Data Final"
+            format="M/D/YYYY"
+            defaultValue={dayjs(finalValue)}
+            onChange={(newValue) => {
+              setValueFinal(newValue);
+            }}
+          />
+        </DemoContainer>
+        <MDButton
+          variant="outlined"
+          color="info"
+          size="small"
+          onClick={() => atualizaParaPeriodo()}
+        >
+          Pesquisar
+        </MDButton>
+      </LocalizationProvider> */}
     </div>
   );
 }
