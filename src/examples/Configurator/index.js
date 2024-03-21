@@ -24,6 +24,13 @@ import Switch from "@mui/material/Switch";
 import IconButton from "@mui/material/IconButton";
 import Link from "@mui/material/Link";
 import Icon from "@mui/material/Icon";
+import TextField from "@mui/material/TextField";
+import InputAdornment from "@mui/material/InputAdornment";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 
 // @mui icons
 import TwitterIcon from "@mui/icons-material/Twitter";
@@ -33,6 +40,8 @@ import FacebookIcon from "@mui/icons-material/Facebook";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDButton from "components/MDButton";
+
+import InserirVendas from "./InserirCompras/InserirCompras";
 
 // Custom styles for the Configurator
 import ConfiguratorRoot from "examples/Configurator/ConfiguratorRoot";
@@ -137,12 +146,7 @@ function Configurator() {
         pb={0.5}
         px={3}
       >
-        <MDBox>
-          <MDTypography variant="h5">Material UI Configurator</MDTypography>
-          <MDTypography variant="body2" color="text">
-            See our dashboard options.
-          </MDTypography>
-        </MDBox>
+        <InserirVendas />
 
         <Icon
           sx={({ typography: { size }, palette: { dark, white } }) => ({

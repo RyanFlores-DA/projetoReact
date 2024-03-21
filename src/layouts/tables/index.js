@@ -155,9 +155,9 @@ function Tables() {
                       Compras
                     </MDTypography>
                   </Grid>
-                  <Grid item>
+                  {/* <Grid item>
                     <CadVendas></CadVendas>
-                  </Grid>
+                  </Grid> */}
                 </Grid>
               </MDBox>
               <MDBox pt={3}>
