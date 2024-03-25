@@ -31,6 +31,7 @@ import DataTable from "examples/Tables/DataTable";
 import ReportsBarChart from "examples/Charts/BarCharts/ReportsBarChart";
 import ReportsLineChart from "examples/Charts/LineCharts/ReportsLineChart";
 import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatisticsCard";
+import MDButton from "components/MDButton";
 
 // Data
 import authorsTableData from "layouts/tables/data/authorsTableData";
@@ -42,7 +43,22 @@ import React, { useState, useEffect } from "react";
 
 import CadVendas from "./cadastros/cadVendas";
 
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import dayjs from "dayjs";
+
 function Tables() {
+  const dataAtual = new Date();
+  const dia = String(dataAtual.getDate()).padStart(2, "0");
+  const mes = String(dataAtual.getMonth() + 1).padStart(2, "0");
+  const ano = dataAtual.getFullYear();
+
+  const dataFormatada = `${dia}/${mes}/${ano}`;
+  const [initialValue, setValueInitial] = React.useState(dayjs(dataFormatada));
+  const [finalValue, setValueFinal] = React.useState(dayjs(dataFormatada));
+
   const { columns, rows } = authorsTableData();
   const { columns: assinaturasColunas, rows: assinaturasLinhas } = assinaturasTableData();
   const [resumo, setResumo] = useState([]);
@@ -149,12 +165,40 @@ function Tables() {
                 borderRadius="lg"
                 coloredShadow="dark"
               >
-                <Grid container alignItems="center" spacing={2}>
+                <Grid container alignItems="center" spacing={3}>
                   <Grid item>
                     <MDTypography variant="h6" color="white">
                       Compras
                     </MDTypography>
                   </Grid>
+                  <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt">
+                    <DemoContainer components={["DatePicker", "DatePicker"]}>
+                      <DatePicker
+                        label="Data Inicial"
+                        format="M/D/YYYY"
+                        defaultValue={dayjs(initialValue)}
+                        onChange={(newValue) => {
+                          setValueInitial(newValue);
+                        }}
+                      />
+                      <DatePicker
+                        label="Data Final"
+                        format="M/D/YYYY"
+                        defaultValue={dayjs(finalValue)}
+                        onChange={(newValue) => {
+                          setValueFinal(newValue);
+                        }}
+                      />
+                    </DemoContainer>
+                    <MDButton
+                      variant="outlined"
+                      color="info"
+                      size="small"
+                      onClick={() => atualizaParaPeriodo()}
+                    >
+                      Pesquisar
+                    </MDButton>
+                  </LocalizationProvider>
                   {/* <Grid item>
                     <CadVendas></CadVendas>
                   </Grid> */}
